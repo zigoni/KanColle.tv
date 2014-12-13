@@ -17,14 +17,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o60^c*mj-2ukntm$7=vf20v(9t41ea-#xw3j=$&b8+1s&yov3i'
+SECRET_KEY = os.environ.get('KC_SECRET_KEY', 'o60^c*mj-2ukntm$7=vf20v(9t41ea-#xw3j=$&b8+1s&yov3i')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('KC_DEBUG', True)
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -66,9 +66,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.environ.get('KC_LANGUAGE_CODE', 'zh-cn')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ.get('KC_TIME_ZONE', 'UTC')
 
 USE_I18N = True
 
@@ -81,3 +81,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
