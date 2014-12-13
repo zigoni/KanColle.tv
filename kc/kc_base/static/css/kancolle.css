@@ -1,0 +1,46 @@
+body {
+  font-family: "Segoe UI",Arial,"Microsoft YaHei",SimHei,sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+.text-indent p {
+  text-indent: 2em;
+}
+.narrow_margin_top {
+  margin-top: 5px;
+}
+a.external {
+  background: linear-gradient(transparent,transparent),url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtODI2LjQyOSAtNjk4Ljc5MSkiPjxyZWN0IHdpZHRoPSI1Ljk4MiIgaGVpZ2h0PSI1Ljk4MiIgeD0iODI2LjkyOSIgeT0iNzAyLjMwOSIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDZjIi8+PGc+PHBhdGggZD0iTTgzMS4xOTQgNjk4Ljc5MWg1LjIzNHY1LjM5MWwtMS41NzEgMS41NDUtMS4zMS0xLjMxLTIuNzI1IDIuNzI1LTIuNjg5LTIuNjg5IDIuODA4LTIuODA4LTEuMzExLTEuMzExeiIgZmlsbD0iIzA2ZiIvPjxwYXRoIGQ9Ik04MzUuNDI0IDY5OS43OTVsLjAyMiA0Ljg4NS0xLjgxNy0xLjgxNy0yLjg4MSAyLjg4MS0xLjIyOC0xLjIyOCAyLjg4MS0yLjg4MS0xLjg1MS0xLjg1MXoiIGZpbGw9IiNmZmYiLz48L2c+PC9nPjwvc3ZnPg==) no-repeat right center;
+  padding-right: 13px;
+}
+
+#header h2 img {
+  vertical-align: top;
+}
+
+#home_description {
+  background: #FFF url("../img/kancolle_logo.png") no-repeat;
+  padding-left: 250px;
+}
+#home_resources {
+  background: #FFF url("../img/resources.png") no-repeat top right;
+  padding-right: 300px;
+}
+ul.narrow_padding_left {
+  padding-left: 20px;
+}
+#home_proxy {
+  background: #FFF url("../img/proxy.png") no-repeat top left;
+  padding-left: 180px;
+}
+#home_proxy li {
+  line-height: 32px;
+  font-size: 16px;
+}
+
+#connector_description {
+  background: #FFF url("../img/connector.png") no-repeat top right;
+}

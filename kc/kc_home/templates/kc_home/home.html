@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}舰队Collection资讯{% endblock %}
+
+{% block content %}
+<div id="home_description" class="text-indent text-justify">
+  <h3 class="text-primary">游戏简介</h3>
+  <p>《舰队Collection》（艦隊これくしょん -艦これ-，又译舰队收藏）是由日本株式会社角川GAMES与DMM.com合作开发的以IJN（旧日本海军）舰船拟人为题材的<del>军国主义黄赌毒</del>卡牌类网页游戏。</p>
+  <p>《舰队Collection》是将旧日本海军（IJN）的驱逐舰、轻巡洋舰、重巡洋舰等等拟人化成“舰娘”，将她们编组、育成、强化、结婚，目标是成为无敌联合舰队的一款模拟收集游戏。游戏有可以养成自己喜欢舰娘的育成要素，或是收集拥有 100 个以上舰娘的收集要素，与其他玩家一起演习，还有将主炮鱼雷等武装改造等等的多彩玩法。</p>
+  <p>可供收集的舰船十分丰富，驱逐舰、轻巡洋舰、重巡洋舰、战舰、航空母舰、<del>宇宙战舰</del>这些基本分类应有尽有，甚至有航空巡洋舰、重雷装巡洋舰，潜水艇等舰娘可以收藏。本作中玩家被称为提督或司令，并随着服务器内的提督们主要是一些肝帝打倒BOSS所得到的功勋来排名。不同的排名会获得不同的军阶，从少佐到元帅都有。</p>
+  <p>由于玩家人数最近呈几何增长，造成服务器无限瘫痪。所以暂时终止继续登陆新玩家改用每日抽选的方式来加入游戏（抢号）。营运由DMM<del>大咪咪</del>负责，非日本地区IP的话就会出现错误，于是产生了各种神奇的工具破解DMM的限制。</p>
+  <p class="text-right">—— 摘自 <a href="http://zh.moegirl.org/zh-cn/%E8%88%B0%E9%98%9FCollection" class="external" target="_blank">萌娘百科</a></p>
+</div>
+<div id="home_resources" class="text-indent text-justify">
+  <h3 class="text-primary">相关资源</h3>
+  <div class="row">
+    <div class="col-lg-4">
+      <h4>官方</h4>
+      <ul class="narrow_padding_left">
+        <li><a href="http://www.dmm.com/netgame_s/kancolle/" class="external" target="_blank">游戏官方网站 (需日本IP)</a></li>
+        <li><a href="https://twitter.com/KanColle_STAFF" class="external" target="_blank">游戏官方推特 (需翻墙)</a></li>
+        <li><a href="http://kancolle-anime.jp/" class="external" target="_blank">动画官方网站</a></li>
+        <li><a href="https://twitter.com/anime_KanColle" class="external" target="_blank">动画官方推特 (需翻墙)</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-4">
+      <h4>账号、登录</h4>
+      <ul class="narrow_padding_left">
+        <li><a href="http://tieba.baidu.com/p/2714379355" class="external" target="_blank">如何抢号？</a></li>
+        <li><a href="http://unlockacgweb.galstars.net/" class="external" target="_blank">岛风GO</a></li>
+        <li><a href="http://www.crystalacg.com/" class="external" target="_blank">CrystalACG</a></li>
+        <li><a href="http://pan.baidu.com/s/1jGwpnka" class="external" target="_blank">DmmUnlocker</a></li>
+        <li><a href="https://kancolle.tv/connector/" target="_blank">舰娘登录器</a></li>
+        <li><a href="/proxy/" target="_blank">KTV代理服务器</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-4">
+      <h4>游戏工具</h4>
+      <ul class="narrow_padding_left">
+        <li><a href="http://grabacr.net/kancolleviewer" class="external" target="_blank">提督業も忙しい！(提督很忙！)</a></li>
+        <li><a href="http://kancolle.sanaechan.net/" class="external" target="_blank">航海日志 (需翻墙)</a></li>
+        <li><a href="https://chrome.google.com/webstore/detail/fpnnnfceocfkfebmngdmeidiaedahflb" class="external" target="_blank">艦これブラウザ (Chrome扩展)</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-4">
+      <h4>攻略、讨论</h4>
+      <ul class="narrow_padding_left">
+        <li><a href="http://wikiwiki.jp/kancolle/" class="external" target="_blank">日文Wiki</a></li>
+        <li><a href="http://tieba.baidu.com/f?kw=%BD%A2%B6%D3collection" class="external" target="_blank">百度贴吧</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-4">
+      <h4>关于本站</h4>
+      <ul class="narrow_padding_left">
+        <li><a href="https://coding.net/u/xchange/p/kancolle/git" class="external" target="_blank">本站源代码 (欢迎加入开发)</a></li>
+        <li>QQ群：384156744</li>
+        <li><a href="http://xchange.im/" class="external" target="_blank">站长博客</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
