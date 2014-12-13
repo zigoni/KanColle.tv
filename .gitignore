@@ -48,3 +48,7 @@ docs/_build/
 
 # SQLite file
 kc/db.sqlite3
+
+# Virtualenv
+bin/
+include/
