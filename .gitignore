@@ -52,3 +52,7 @@ kc/db.sqlite3
 # Virtualenv
 bin/
 include/
+
+# Deployed static files
+kc/static
+kc/media
