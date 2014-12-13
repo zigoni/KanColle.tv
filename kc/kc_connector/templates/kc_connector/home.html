@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="connector_description" class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     {% if form.is_valid %}
       <p class="text-{% if success %}success{% else %}danger{% endif %}"><strong>{{ message }}</strong></p>
       {% if success %}
@@ -17,7 +17,7 @@
       {% crispy form form.helper %}
     {% endif %}
   </div>
-  <div class="col-md-8">
+  <div class="col-md-7 pull-right">
     <h3 class="text-primary narrow_margin_top">关于游戏登录器</h3>
     <ul class="narrow_padding_left">
 	  <li><strong>本站并非舰队collection官方网站，游戏官网请点<a href="http://www.dmm.com/netgame_s/kancolle/" class="external">这里</a></strong></li>
