@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.environ.get('KC_SECRET_KEY', 'o60^c*mj-2ukntm$7=vf20v(9t41ea-#xw3j=$&b8+1s&yov3i')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('KC_DEBUG', True))
+DEBUG = bool(os.environ.get('KC_DEBUG', False))
 
 TEMPLATE_DEBUG = DEBUG
 
