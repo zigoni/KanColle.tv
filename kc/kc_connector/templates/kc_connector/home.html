@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}登录器{% endblock %}
+
+{% block content %}
+<div id="connector_description" class="row">
+  <div class="col-md-4">
+    {% if form.is_valid %}
+      <p class="text-{% if success %}success{% else %}danger{% endif %}"><strong>{{ message }}</strong></p>
+      {% if success %}
+      <p><a href="{{ play_url }}" class="btn btn-primary">打开游戏</a> <a href="{{ play_url }}" target="_blank" class="btn btn-primary">在新窗口中打开游戏</a></p>
+      {% else %}
+      <p><a href="javascript:history.back()" class="btn btn-primary">返回登录界面</a></p>
+      {% endif %}
+    {% else %}
+      {% crispy form form.helper %}
+    {% endif %}
+  </div>
+  <div class="col-md-8">
+    <h3 class="text-primary narrow_margin_top">关于游戏登录器</h3>
+    <ul class="narrow_padding_left">
+	  <li><strong>本站并非舰队collection官方网站，游戏官网请点<a href="http://www.dmm.com/netgame_s/kancolle/" class="external">这里</a></strong></li>
+      <li>本登录器仅用于已注册用户在不开启VPN的情况下登录游戏</li>
+	  <li>本登录器通过向DMM转发用户的登录信息来规避其对IP的限制</li>
+      <li>本登录器不支持Google Plus和Facebook账号登录</li>
+      <li>本登录器不会保存任何用户信息</li>
+      <li>本网站对使用本登录器可能造成的任何后果不负责任</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

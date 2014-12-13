@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'kc_base',
     'kc_home',
+    'kc_connector',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (
