@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kc_base',
+    'kc_user',
     'kc_home',
     'kc_connector',
     'crispy_forms',
@@ -91,3 +92,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Custom user model
+AUTH_USER_MODEL = 'kc_user.KcUser'
