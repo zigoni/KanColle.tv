@@ -49,12 +49,12 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.username
 
-    def __str__(self):
-        return self.username
-
     class Meta:
         verbose_name = 'KTV用户'
         verbose_name_plural = 'KTV用户'
+
+    def __str__(self):
+        return self.get_full_name()
 
 
 class KcUserPasswordReset(models):
