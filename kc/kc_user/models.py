@@ -5,6 +5,7 @@ from django.core import validators
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
+from django.conf import settings
 
 
 class KcUserManager(BaseUserManager):
@@ -54,3 +55,16 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'KTV用户'
         verbose_name_plural = 'KTV用户'
+
+
+class KcUserPasswordReset(models):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='passwordreset')
+    code = models.CharField('密码重置代码', max_length=32)
+    create_time = models.DateTimeField('密码重置请求创建时间', default=timezone.now)
+
+    class Meta:
+        verbose_name = '密码重置请求'
+        verbose_name_plural = '密码重置请求'
+
+    def __str__(self):
+        return '%s 的密码重置请求' % self.user.get_full_name()
