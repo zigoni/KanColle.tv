@@ -58,7 +58,7 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
 
 
 class KcUserPasswordReset(models):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='passwordreset')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='password_reset')
     code = models.CharField('密码重置代码', max_length=32)
     create_time = models.DateTimeField('密码重置请求创建时间', default=timezone.now)
 
@@ -68,3 +68,16 @@ class KcUserPasswordReset(models):
 
     def __str__(self):
         return '%s 的密码重置请求' % self.user.get_full_name()
+
+
+class KcUserEmailConfirmation(models):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='email_confirmation')
+    code = models.CharField('电子邮件确认代码', max_length=32)
+    create_time = models.DateTimeField('电子邮件确认请求创建时间', default=timezone.now)
+
+    class Meta:
+        verbose_name = '电子邮件确认请求'
+        verbose_name_plural = '电子邮件确认请求'
+
+    def __str__(self):
+        return '%s 的电子邮件确认请求' % self.user.get_full_name()
