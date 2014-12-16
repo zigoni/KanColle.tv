@@ -41,7 +41,6 @@ def get_play_url(login_id, password):
         pwKey = j['password']
     except:
         raise AjaxRequestError
-    print(id_token, idKey, pwKey)
 
     # login
     del(headers['DMM_TOKEN'])
@@ -59,7 +58,6 @@ def get_play_url(login_id, password):
     req = s.post(POST_URL, data=post_data, headers=headers, timeout=REQUESTS_TIMEOUT, proxies=REQUESTS_PROXIES)
     del(headers['Referer'])
     req = s.get(GAME_URL, headers=headers, timeout=REQUESTS_TIMEOUT, proxies=REQUESTS_PROXIES)
-    print(req.text)
     m = re.search('URL\W+:\W+"(.*)",', req.text)
     if m is None:
         raise LoginError
