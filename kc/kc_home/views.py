@@ -10,3 +10,7 @@ def home(request):
 
 def proxy(request):
     return render(request, 'kc_home/proxy.html', context)
+
+
+def hosts(request):
+    return render(request, 'kc_home/hosts.html', context)
