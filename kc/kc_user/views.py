@@ -82,7 +82,32 @@ def changepassword(request):
 
 
 def forgetpassword(request):
-    pass
+    form = ForgetPasswordForm(request.POST or None)
+    if form.is_valid():
+        email = form.cleaned_data['email']
+        user = KcUser.objects.get(email=email)
+        try:
+            rpq = KcUserPasswordReset.objects.get(user=user)
+            rpq.delete()
+        except KcUserPasswordReset.DoesNotExist:
+            pass
+        hashstr = email+KcUser.objects.make_random_password()
+        reset_code = hashlib.md5(hashstr.encode('utf-8')).hexdigest()
+        rpq = KcUserPasswordReset.objects.create(user=user, code=reset_code)
+        rpq.save()
+
+        mail_subject = 'KanColle.tv用户重置密码确认'
+        mail_body = '%s，您好！\n请用下面的链接重置您的密码：\n\nhttp://kancolle.tv/user/resetpassword/%s/\n\n如果这不是您本人进行的，请忽略本邮件。\n本邮件由系统自动发送，请勿回复' % (user.username, reset_code)
+        mail_from = 'webmaster@kancolle.tv'
+        mail_to = [email, ]
+        send_mail(mail_subject, mail_body, mail_from, mail_to)
+
+        context['title'] = '重置密码'
+        context['message'] = '一封包含密码重置链接的邮件已发送到您的邮箱，请查收您的邮箱进行下一步。'
+        return render(request, 'message.html', context)
+
+    context['form'] = form
+    return render(request, 'kc_user/forgetpassword.html', context)
 
 
 def resetpassword(request):
