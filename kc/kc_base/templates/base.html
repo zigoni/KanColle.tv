@@ -26,7 +26,7 @@
         <li role="presentation"{% ifequal active 'donjinshi' %} class="active"{% endifequal %}><a href="https://kancolle.tv/comic/">同人志</a></li>
         <li role="presentation"{% ifequal active 'user' %} class="active"{% endifequal %}><a class="dropdown-toggle" data-toggle="dropdown">KTV用户 <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-menu-right small-width" role="menu">
-            {% if user.is_authenticated %}<li><a href="/user/">设置</a></li>
+            {% if user.is_authenticated %}<li><a href="{% url 'kc-user-home' %}">设置</a></li>
             <li><a href="{% url 'kc-user-logout' %}">注销</a></li>{% else %}<li><a href="{% url 'kc-user-login' %}">登录</a></li>
             <li><a href="{% url 'kc-user-signup' %}">注册</a></li>{% endif %}
           </ul>

@@ -10,6 +10,11 @@ from kc_user.forms import *
 context = {'active': 'user'}
 
 
+@login_required
+def home(request):
+    return render(request, 'kc_user/home.html', context)
+
+
 def signup(request):
     if KC_USER_SIGNUP:
         if request.user.is_authenticated():
@@ -62,5 +67,23 @@ def confirmation(request, code):
     return render(request, 'message.html', context)
 
 
+@login_required
+def changepassword(request):
+    form = ChangePasswordForm(data=(request.POST or None), request=request)
+    if form.is_valid():
+        user = request.user
+        user.set_password(form.cleaned_data['new_password'])
+        request.user.save(update_fields=['password'])
+        context['title'] = '修改密码成功'
+        context['message'] = '修改密码成功！'
+        return render(request, 'message.html', context)
+    context['form'] = form
+    return render(request, 'kc_user/changepassword.html', context)
+
+
 def forgetpassword(request):
+    pass
+
+
+def resetpassword(request):
     pass

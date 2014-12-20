@@ -104,4 +104,5 @@ EMAIL_HOST_USER = os.environ.get('KC_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('KC_EMAIL_HOST_PASSWORD')
 
 # Login
+LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/user/'

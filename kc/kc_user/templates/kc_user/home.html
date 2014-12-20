@@ -1,0 +1,26 @@
+{% extends 'kc_user/user_base.html' %}
+{% load staticfiles %}
+
+{% block title %}KTV用户中心{% endblock %}
+
+{% block job %}
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">用户信息</div>
+      <div class="panel-body">
+        <p><strong>E-mail：</strong>{{ user.email }}</p>
+        <p><strong>用户名：</strong>{{ user.username }}</p>
+        <p><strong>创建日期：</strong>{{ user.create_time|date:"Y-n-j G:i" }}</p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">个人设置</div>
+      <div class="panel-body">
+        <div class="action">
+          <a href="{% url 'kc-user-change-password' %}"><div class="action-img"><img src="{% static 'img/password.png' %}"></div>
+          <div class="action-name">修改密码</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
