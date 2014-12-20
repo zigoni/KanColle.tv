@@ -110,5 +110,22 @@ def forgetpassword(request):
     return render(request, 'kc_user/forgetpassword.html', context)
 
 
-def resetpassword(request):
-    pass
+def resetpassword(request, code):
+    try:
+        rpq = KcUserPasswordReset.objects.get(code=code)
+    except KcUserPasswordReset.DoesNotExist:
+        context['title'] = '重置密码链接错误'
+        context['message'] = '您不能通过此链接重置密码。'
+        return render(request, 'warning.html', context)
+    form = ResetPasswordForm(data=(request.POST or None), request=request)
+    if form.is_valid():
+        user = rpq.user
+        password = form.cleaned_data['new_password']
+        user.set_password(password)
+        user.save()
+        rpq.delete()
+        context['title'] = '重置密码成功'
+        context['message'] = '您的密码已重置成功。'
+        return render(request, 'message.html', context)
+    context['form'] = form
+    return render(request, 'kc_user/resetpassword.html', context)
