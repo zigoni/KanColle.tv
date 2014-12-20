@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}用户登录{% endblock %}
 
 {% block content %}
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-md-offset-1">
     <h3 class="text-center"><strong>登录KanColle.tv</strong></h3>
     {% if form.errors %}<div class="alert alert-warning">登录失败，请检查用户名和密码是否正确。</div>{% endif %}
     <form  method="post" role="form" class="form-horizontal">
@@ -27,7 +28,8 @@
       </div>
     </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-4">
+    <img src="{% static 'img/login.png' %}">
   </div>
 </div>
 {% endblock %}
