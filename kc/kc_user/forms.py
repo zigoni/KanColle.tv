@@ -46,6 +46,9 @@ class SignupForm(forms.ModelForm):
             return username
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
+    def clean_password(self):
+        return self.cleaned_data['password']
+
     def clean_confirmed_password(self):
         password = self.cleaned_data['password']
         confirmed_password = self.cleaned_data['confirmed_password']

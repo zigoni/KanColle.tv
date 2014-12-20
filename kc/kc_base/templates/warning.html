@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 text-center">
+    <div class="alert alert-warning">
+      <h3><strong>{{ title }}</strong></h3>
+      <p>{{ message }}</p>
+      <p><a href="javascript:history.back()" class="btn btn-primary">后退</a> <a href="/" class="btn btn-primary">返回首页</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

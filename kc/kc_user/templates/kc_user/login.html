@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}用户登录{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h3 class="text-center"><strong>登录KanColle.tv</strong></h3>
+    {% if form.errors %}<div class="alert alert-warning">登录失败，请检查用户名和密码是否正确。</div>{% endif %}
+    <form  method="post" role="form" class="form-horizontal">
+      {% csrf_token %}
+      <div id="div_id_username" class="form-group">
+        <label for="id_username" class="control-label requiredField col-md-2">电子邮件<span class="asteriskField">*</span></label>
+        <div class="controls col-md-10">
+          <input class="emailinput form-control" id="id_username" maxlength="254" name="username" type="email" />
+        </div>
+      </div>
+      <div id="div_id_password" class="form-group">
+        <label for="id_password" class="control-label requiredField col-md-2">密码<span class="asteriskField">*</span></label>
+        <div class="controls col-md-10">
+          <input class="textinput textInput form-control" id="id_password" maxlength="128" name="password" type="password" />
+        </div>
+      </div>
+      <div class="form-actions text-center">
+        <input type="submit" name="submit" value="登录" class="btn btn-primary" id="submit-id-submit" />
+        <a href="{% url 'user-forget-password' %}" class="btn btn-primary">忘记密码</a>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-6">
+  </div>
+</div>
+{% endblock %}

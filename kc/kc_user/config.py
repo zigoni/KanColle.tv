@@ -1,0 +1,1 @@
+KC_USER_SIGNUP = True
