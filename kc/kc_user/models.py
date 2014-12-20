@@ -25,6 +25,23 @@ class KcUserManager(BaseUserManager):
         return user
 
 
+class KcGroup(models.Model):
+    symbol = models.CharField('标志', max_length=20, unique=True,
+        help_text='用于系统内部识别的标志，必须以英文字母开头，之后可有英文字母、数字或下划线，长度不超过20',
+        validators=[validators.RegexValidator(re.compile('^[\w][\w\d_]{0,19}$'), '请按格式输入', 'invalid')])
+    name = models.CharField('名称', max_length=20, unique=True,
+        help_text='用于显示的名称，可使用任意字符，HTML标记无效，长度不超过20')
+    description = models.CharField('描述', max_length=200,
+        help_text='对用户组的描述，可使用任意字符，HTML标记无效，长度不超过200')
+
+    class Meta:
+        verbose_name = '用户组'
+        verbose_name_plural = '用户组'
+
+    def __str__(self):
+        return self.name
+
+
 class KcUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('电子邮件', max_length=254, unique=True,
         help_text='电子邮件必须真实有效，否则将无法激活账号')
@@ -36,6 +53,7 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField('用户是否可用', default=True)
     is_staff = models.BooleanField('是否为管理用户', default=False)
     create_time = models.DateTimeField('用户创建时间', default=timezone.now)
+    kc_groups = models.ManyToManyField(KcGroup, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -48,6 +66,10 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.username
+
+    def get_kc_groups(self):
+        kc_groups = set([g.symbol for g in self.kc_groups.all()])
+        return kc_groups
 
     class Meta:
         verbose_name = 'KTV用户'
