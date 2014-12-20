@@ -35,7 +35,7 @@ def signup(request):
             email_confirmation.save()
 
             mail_subject = 'KanColle.tv注册用户激活'
-            mail_body = '%s，您好！\n感谢您注册成为KanColle.tv的用户，请用下面的链接激活您的账号：\n\nhttp://kancolle.tv/user/confirmation/%s/\n\n本邮件由系统自动发送，请勿回复' % (username, email_confirmation_code)
+            mail_body = '%s，您好！\n感谢您注册成为KanColle.tv的用户，请用下面的链接激活您的账号：\n\nhttps://kancolle.tv/user/confirmation/%s/\n\n本邮件由系统自动发送，请勿回复' % (username, email_confirmation_code)
             mail_from = 'webmaster@kancolle.tv'
             mail_to = [email, ]
             send_mail(mail_subject, mail_body, mail_from, mail_to)
@@ -97,7 +97,7 @@ def forgetpassword(request):
         rpq.save()
 
         mail_subject = 'KanColle.tv用户重置密码确认'
-        mail_body = '%s，您好！\n请用下面的链接重置您的密码：\n\nhttp://kancolle.tv/user/resetpassword/%s/\n\n如果这不是您本人进行的，请忽略本邮件。\n本邮件由系统自动发送，请勿回复' % (user.username, reset_code)
+        mail_body = '%s，您好！\n请用下面的链接重置您的密码：\n\nhttps://kancolle.tv/user/resetpassword/%s/\n\n如果这不是您本人进行的，请忽略本邮件。\n本邮件由系统自动发送，请勿回复' % (user.username, reset_code)
         mail_from = 'webmaster@kancolle.tv'
         mail_to = [email, ]
         send_mail(mail_subject, mail_body, mail_from, mail_to)
