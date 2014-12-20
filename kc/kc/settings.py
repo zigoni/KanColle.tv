@@ -99,7 +99,7 @@ AUTH_USER_MODEL = 'kc_user.KcUser'
 # Email
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = os.environ.get('KC_EMAIL_HOST')
-EMAIL_PORT = int(os.environ.get('KC_EMAIL_PORT'), 465)
+EMAIL_PORT = int(os.environ.get('KC_EMAIL_PORT', 465))
 EMAIL_HOST_USER = os.environ.get('KC_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('KC_EMAIL_HOST_PASSWORD')
 
