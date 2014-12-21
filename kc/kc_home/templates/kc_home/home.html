@@ -4,6 +4,11 @@
 {% block title %}舰队Collection资讯{% endblock %}
 
 {% block content %}
+<div id="announcement" class="alert alert-info alert-dismissable text-center">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <p>舰娘登录器现已移动到<a href="{% url 'kc-connector' %}" class="alert-link">右上角的导航条</a>中，不再作为本站主页。</p>
+  <p>另外本站现在还提供传统的<a href="{% url 'kc-hosts' %}" class="alert-link">改hosts方法</a>和<a href="{% url 'kc-proxy' %}" class="alert-link">代理服务器方法</a>来上DMM网站。</p>
+</div>
 <div id="home_description" class="text-indent text-justify">
   <h3 class="text-primary">游戏简介</h3>
   <p>《舰队Collection》（艦隊これくしょん -艦これ-，又译舰队收藏）是由日本株式会社角川GAMES与DMM.com合作开发的以IJN（旧日本海军）舰船拟人为题材的<del>军国主义黄赌毒</del>卡牌类网页游戏。</p>
@@ -32,8 +37,8 @@
         <li><a href="http://www.crystalacg.com/" class="external" target="_blank">CrystalACG</a></li>
         <li><a href="http://pan.baidu.com/s/1jGwpnka" class="external" target="_blank">DmmUnlocker</a></li>
         <li><a href="https://kancolle.tv/connector/" target="_blank">舰娘登录器</a></li>
-        <li><a href="/proxy/" target="_blank">KTV代理服务器</a></li>
-        <li><a href="/hosts/" target="_blank">改hosts上DMM</a></li>
+        <li><a href="{% url 'kc-hosts' %}" target="_blank">改hosts上DMM</a></li>
+        <li><a href="{% url 'kc-proxy' %}" target="_blank">KTV代理服务器</a></li>
       </ul>
     </div>
     <div class="col-lg-4">
