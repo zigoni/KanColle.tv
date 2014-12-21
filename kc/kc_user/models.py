@@ -53,7 +53,7 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField('用户是否可用', default=True)
     is_staff = models.BooleanField('是否为管理用户', default=False)
     create_time = models.DateTimeField('用户创建时间', default=timezone.now)
-    kc_groups = models.ManyToManyField(KcGroup, blank=True)
+    kc_groups = models.ManyToManyField(KcGroup, blank=True, verbose_name='所属用户组')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
