@@ -1,0 +1,27 @@
+{% extends 'kc_user/user_base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}上传文件{% endblock %}
+
+{% block job %}
+  <div class="col-md-7">
+    <div class="panel panel-default">
+      <div class="panel-heading">上传文件</div>
+      <div class="panel-body">
+        {% if form.is_valid %}
+          {% if success %}
+            <p class="text-success">文件上传成功！</p>
+            <a class="btn btn-primary" href="{% url 'kc-donjin-upload' %}">发布漫画</a>
+          {% else %}
+            <p class="text-danger">文件上传失败，不符合系统要求的格式！</p>
+            <a class="btn btn-primary" href="{% url 'kc-donjin-upload' %}">重新上传</a>
+          {% endif %}
+        {% else %}
+          {% crispy form form.helper %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"><img src="{% static 'img/donjin_upload.png' %}" class="action-logo"></div>
+{% endblock %}

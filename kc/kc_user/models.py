@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.conf import settings
+from kc_donjin.config import *
 
 
 class KcUserManager(BaseUserManager):
@@ -70,6 +71,20 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
     def get_kc_groups(self):
         kc_groups = set([g.symbol for g in self.kc_groups.all()])
         return kc_groups
+
+    def is_donjin_uploader(self):
+        kc_groups = self.get_kc_groups()
+        if KC_DONJIN_UPLOADER in kc_groups:
+            return True
+        else:
+            return False
+
+    def is_donjin_publisher(self):
+        kc_groups = self.get_kc_groups()
+        if KC_DONJIN_PUBLISHER in kc_groups:
+            return True
+        else:
+            return False
 
     class Meta:
         verbose_name = '用户'

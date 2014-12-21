@@ -22,5 +22,8 @@
         </div>
       </div>
     </div>
+    {% if user.is_superuser or user.is_staff or user.is_donjin_publisher or user.is_donjin_uploader %}
+      {% include 'kc_donjin/mgt.html' %}
+    {% endif %}
   </div>
 {% endblock %}
