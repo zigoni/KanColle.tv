@@ -56,3 +56,6 @@ include/
 # Deployed static files
 kc/static
 kc/media
+
+# migrations
+migrations
