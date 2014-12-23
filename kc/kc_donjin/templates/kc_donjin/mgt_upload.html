@@ -24,6 +24,9 @@
             showStatusAfterSuccess: false,
             uploadButtonClass: "btn btn-primary",
             dragDropStr: "<span>可拖动文件到此处</span>",
+            abortStr: "终止",
+            cancelStr: "取消",
+            doneStr: "完成",
             onSuccess: function(files, data, xhr) {
               var messagebox = $("#messagebox");
               messagebox.addClass("alert "+data.class);

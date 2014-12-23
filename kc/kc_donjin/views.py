@@ -39,7 +39,7 @@ def upload_receiver(request):
         if path:
             response = {
                 'class': 'alert-success',
-                'message': '<p>文件上传成功！！！！！！</p>',
+                'message': '<p>文件上传成功！</p><p><a href="%s" class="alert-link">继续上传</a></p>' % reverse('kc-donjin-upload'),
                 'rar_file': path,
             }
         else:
