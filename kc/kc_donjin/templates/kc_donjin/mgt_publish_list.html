@@ -15,18 +15,14 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>文件名</th>
-              <th>上传者</th>
-              <th>上传时间</th>
+              <th>文件</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody>
           {% for f in files %}
             <tr>
-              <td title="{{ f.md5 }}">{{ f.file_name }}</td>
-              <td>{{ f.uploader.username }}</td>
-              <td>{{ f.upload_time|date:"Y-n-j G:i"  }}</td>
+              <td title="发布者：{{ f.uploader.username  }}&#13;发布时间：{{ f.upload_time|date:"Y-n-j G:i"  }}">{{ f.file_name }}</td>
               <td><a href="{% url 'kc-donjin-publish-uploaded-file' fid=f.pk %}" title="发布"><i class="glyphicon glyphicon-ok"></i></a>
               <a href="{% url 'kc-donjin-delete-uploaded-file' fid=f.pk %}" title="删除" onclick="return confirm('你确定要删除这个文件吗？\n{{ f.file_name }}');"><i class="glyphicon glyphicon-remove"></i></a></td>
             </tr>
