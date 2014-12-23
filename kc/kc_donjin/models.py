@@ -9,6 +9,7 @@ class KcUploadedComicFile(models.Model):
     uploader = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='上传者', related_name='upload_files')
     upload_time = models.DateTimeField('上传时间', auto_now_add=True)
     md5 = models.CharField('MD5哈希值', max_length=32, unique=True)
+    linked = models.BooleanField('是否与漫画关联', default=False)
 
     class Meta:
         verbose_name = '已上传同人漫画文件'
