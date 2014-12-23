@@ -1,0 +1,43 @@
+{% extends 'kc_user/user_base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}发布文件{% endblock %}
+
+{% block job %}
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">发布文件</div>
+      <div class="panel-body">
+        <p>本站管理员和同人发布组可以管理所有待发布的同人漫画文件。</p>
+        <p>同人上传组可以管理自己上传的同人漫画文件。</p>
+        {% if files %}
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>文件名</th>
+              <th>上传者</th>
+              <th>上传时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for f in files %}
+            <tr>
+              <td title="{{ f.md5 }}">{{ f.file_name }}</td>
+              <td>{{ f.uploader.username }}</td>
+              <td>{{ f.upload_time|date:"Y-n-j G:i"  }}</td>
+              <td><a href="{% url 'kc-donjin-publish-uploaded-file' fid=f.pk %}" title="发布"><i class="glyphicon glyphicon-ok"></i></a>
+              <a href="{% url 'kc-donjin-delete-uploaded-file' fid=f.pk %}" title="删除" onclick="return confirm('你确定要删除这个文件吗？\n{{ f.file_name }}');"><i class="glyphicon glyphicon-remove"></i></a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p>目前没有可发布的同人漫画文件。</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"><img src="{% static 'img/donjin_publish.png' %}" class="action-logo"></div>
+{% endblock %}

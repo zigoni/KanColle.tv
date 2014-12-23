@@ -69,3 +69,40 @@ def upload_receiver(request):
         response['message'] = '<p>你上传了什么鬼？</p>'
 
     return HttpResponse(json.dumps(response), content_type='text/plain')
+
+
+@login_required
+def publish(request):
+    u = request.user
+    if not (u.is_superuser or u.is_staff or u.is_donjin_publisher or u.is_donjin_uploader):
+        context['title'] = '权限不足'
+        context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
+        return render(request, 'warning.html', context)
+
+    if u.is_superuser or u.is_staff or u.is_donjin_publisher:
+        query = KcUploadedComicFile.objects.filter(linked=False)
+    else:
+        query = KcUploadedComicFile.objects.filter(uploader=u, linked=False)
+    context['files'] = query
+    return render(request, 'kc_donjin/mgt_publish_list.html', context)
+
+
+@login_required
+def publish_uploaded_file(request, fid):
+    pass
+
+
+@login_required
+def delete_uploaded_file(request, fid):
+    pass
+
+
+@login_required
+def edit_comic(request, cid):
+    pass
+
+
+@login_required
+def delete_comic(request, cid):
+    pass
+
