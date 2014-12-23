@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
-from kc_donjin.lib import handle_uploaded_file
+from kc_donjin.lib import handle_uploaded_file, UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
 from kc_donjin.models import KcUploadedComicFile
 
 context = {'active': 'donjin'}
@@ -31,13 +31,23 @@ def upload_receiver(request):
         'message': '',
         'rar_file': '',
     }
+
     u = request.user
     if not (u.is_superuser or u.is_staff or u.is_donjin_publisher or u.is_donjin_uploader):
         response['message'] = '<p">您没有上传文件的权限。</p>'
     elif request.method != 'POST':
         response['message'] = '<p">请手下留情，不要攻击本站。</p>'
     elif request.FILES['rar_file']:
-        path = handle_uploaded_file(request.FILES['rar_file'])
+        path = None
+        try:
+            path = handle_uploaded_file(request.FILES['rar_file'])
+        except UploadedFileExists:
+            response['message'] = '<p">您上传的文件和已有文件冲突。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+        except UploadedFileFormatError:
+            response['message'] = '<p">您上传的文件不是RAR文件。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+        except UploadedFileContentError:
+            response['message'] = '<p">您上传的文件不符合系统要求。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+
         if path:
             md5 = hashlib.md5(open(path, 'rb').read()).hexdigest()
             try:
@@ -53,9 +63,9 @@ def upload_receiver(request):
                     'rar_file': path,
                 }
             else:
+                os.unlink(path)
                 response['message'] = '<p">您上传的文件已经存在。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
-        else:
-            response['message'] = '<p">您上传的文件不符合系统要求。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
     else:
         response['message'] = '<p>你上传了什么鬼？</p>'
+
     return HttpResponse(json.dumps(response), content_type='text/plain')
