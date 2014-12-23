@@ -1,5 +1,7 @@
 import os
 import rarfile
+import natsort
+from PIL import Image
 from kc_donjin.config import *
 
 
@@ -42,3 +44,38 @@ def handle_uploaded_file(f):
 
     os.unlink(path)
     raise UploadedFileFormatError
+
+
+def extract_rar_file(file):
+    extract_dir = os.path.join(KC_DONJIN_IMAGE_DIR, file.get_extract_dir())
+    path = os.path.join(KC_DONJIN_UPLOAD_DIR, file.file_name)
+    rf = rarfile.RarFile(path)
+
+    img_list = []
+    for f in rf.infolist():
+        if not f.isdir():
+            ext = f.filename.split('.')[-1].lower()
+            if ext in KC_DONJIN_IMAGE_EXT:
+                img_list.append(f.filename)
+    img_list = natsort.natsorted(img_list)
+    pages = len(img_list)
+
+    if not os.path.exists(extract_dir):
+        os.mkdir(extract_dir)
+
+    for f in rf.infolist():
+        fn = f.filename
+        if fn in img_list:
+            p = img_list.index(fn)
+            ext = img_list[p].split('.')[-1].lower()
+            extract_path = os.path.join(extract_dir, '%d.%s' % (p+1, ext))
+            data = rf.read(f)
+            open(extract_path, 'wb').write(data)
+
+    cover = Image.open(os.path.join(extract_dir, '1.%s' % img_list[0].split('.')[-1].lower()))
+    w, h = cover.size
+    new_h = int(float(h) / float(w) * 165)
+    cover.thumbnail((165, new_h), Image.ANTIALIAS)
+    cover.save(os.path.join(extract_dir, 'cover_thumbnail.jpg'))
+
+    return pages
