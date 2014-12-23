@@ -73,3 +73,10 @@ ul.narrow_padding_left {
 #connector_description {
   background: #FFF url("../img/connector.png") no-repeat top right;
 }
+
+.ajax-upload-dragdrop {
+  padding-bottom: 10px !important;
+}
+.ajax-upload-dragdrop span {
+  padding-left: 10px;
+}

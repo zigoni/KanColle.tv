@@ -9,18 +9,30 @@
     <div class="panel panel-default">
       <div class="panel-heading">上传文件</div>
       <div class="panel-body">
-        {% if form.is_valid %}
-          {% if success %}
-            <p class="text-success">文件上传成功！</p>
-            <a class="btn btn-primary" href="{% url 'kc-donjin-upload' %}">发布漫画</a>
-          {% else %}
-            <p class="text-danger">文件上传失败，不符合系统要求的格式！</p>
-            <a class="btn btn-primary" href="{% url 'kc-donjin-upload' %}">重新上传</a>
-          {% endif %}
-        {% else %}
-          {% crispy form form.helper %}
-        {% endif %}
+        <p>同人漫画文件必须为RAR格式压缩包，压缩包至少包含两张图片，文件大小不超过200MB。</p>
+        <p>只有本站管理员、同人上传组和同人发布组可以上传文件。</p>
+        <div id="uploader">上传文件</div>
+        <div id="messagebox"></div>
       </div>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $("#uploader").uploadFile({
+            url: "{% url 'kc-donjin-upload-receiver' %}",
+            fileName: "rar_file",
+            formData: {'csrfmiddlewaretoken': $.cookie('csrftoken')},
+            returnType: "json",
+            showStatusAfterSuccess: false,
+            uploadButtonClass: "btn btn-primary",
+            dragDropStr: "<span>可拖动文件到此处</span>",
+            onSuccess: function(files, data, xhr) {
+              var messagebox = $("#messagebox");
+              messagebox.addClass("alert "+data.class);
+              messagebox.html(data.message);
+              $(".ajax-upload-dragdrop").hide();
+            }
+          });
+        });
+      </script>
     </div>
   </div>
   <div class="col-md-2"><img src="{% static 'img/donjin_upload.png' %}" class="action-logo"></div>

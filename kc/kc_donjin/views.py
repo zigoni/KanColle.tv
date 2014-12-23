@@ -1,6 +1,8 @@
+import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from kc_donjin.forms import KcComicUploadForm
+from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 from kc_donjin.lib import handle_uploaded_file
 
 
@@ -15,14 +17,33 @@ def upload(request):
         context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
         return render(request, 'warning.html', context)
 
-    form = KcComicUploadForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        path = handle_uploaded_file(request.FILES['file'])
-        if path:
-            context['success'] = True
-        else:
-            context['success'] = False
-    else:
-        pass
-    context['form'] = form
+    context['extra_css'] = ('css/uploadfile.min.css', )
+    context['extra_js'] = ('js/jquery.uploadfile.min.js', 'js/jquery.cookie.js')
     return render(request, 'kc_donjin/mgt_upload.html', context)
+
+
+@login_required
+def upload_receiver(request):
+    response = {
+        'class': 'alert-danger',
+        'message': '',
+        'rar_file': '',
+    }
+    u = request.user
+    if not (u.is_superuser or u.is_staff or u.is_donjin_publisher or u.is_donjin_uploader):
+        response['message'] = '<p">您没有上传文件的权限。</p>'
+    elif request.method != 'POST':
+        response['message'] = '<p">请手下留情，不要攻击本站。</p>'
+    elif request.FILES['rar_file']:
+        path = handle_uploaded_file(request.FILES['rar_file'])
+        if path:
+            response = {
+                'class': 'alert-success',
+                'message': '<p>文件上传成功！！！！！！</p>',
+                'rar_file': path,
+            }
+        else:
+            response['message'] = '<p">您上传的文件不符合系统要求。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+    else:
+        response['message'] = '<p>你上传了什么鬼？</p>'
+    return HttpResponse(json.dumps(response), content_type='text/plain')
