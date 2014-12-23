@@ -21,12 +21,19 @@
             fileName: "rar_file",
             formData: {'csrfmiddlewaretoken': $.cookie('csrftoken')},
             returnType: "json",
+            maxFileSize:1024*1024*200,
+            maxFileCount:1,
+            allowedTypes: "rar",
             showStatusAfterSuccess: false,
             uploadButtonClass: "btn btn-primary",
             dragDropStr: "<span>可拖动文件到此处</span>",
             abortStr: "终止",
             cancelStr: "取消",
             doneStr: "完成",
+            multiDragErrorStr: "只能上传一个文件",
+            extErrorStr:"只能上传以下类型的文件：",
+            sizeErrorStr:"文件大小不能超过200MB",
+            uploadErrorStr:"上传过程中遇到了错误",
             onSuccess: function(files, data, xhr) {
               var messagebox = $("#messagebox");
               messagebox.addClass("alert "+data.class);
