@@ -34,6 +34,7 @@ class KcComic(models.Model):
     description = models.CharField('简介(不超过255字)', max_length=255, default='')
     file = models.OneToOneField(KcUploadedComicFile, related_name='comic')
     pages = models.PositiveIntegerField('页码数', default=0)
+    clicks = models.PositiveIntegerField('阅读次数', default=0)
 
     class Meta:
         verbose_name = '同人漫画'
