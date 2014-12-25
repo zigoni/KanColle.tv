@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     url(r'^proxy/$', 'kc_home.views.proxy', name='kc-proxy'),
     url(r'^hosts/$', 'kc_home.views.hosts', name='kc-hosts'),
     url(r'^user/', include('kc_user.urls')),
-    url(r'^donjin/', include('kc_donjin.urls')),
+    url(r'^donjin/', include('kc_doujin.urls')),
 )

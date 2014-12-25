@@ -1,5 +1,5 @@
 from django.contrib import admin
-from kc_donjin.models import KcUploadedComicFile, KcComic
+from kc_doujin.models import KcUploadedComicFile, KcComic
 
 
 class KcUploadedComicFileAdmin(admin.ModelAdmin):

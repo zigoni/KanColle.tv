@@ -2,7 +2,7 @@ import os
 import rarfile
 import natsort
 from PIL import Image
-from kc_donjin.config import *
+from kc_doujin.config import *
 
 
 class UploadedFileExists(Exception):
@@ -21,7 +21,7 @@ def handle_uploaded_file(f):
     fn = f.name
     if fn.find('.') == -1:
         fn += '.rar'
-    path = os.path.join(KC_DONJIN_UPLOAD_DIR, fn)
+    path = os.path.join(KC_DOUJIN_UPLOAD_DIR, fn)
     if os.path.exists(path):
         raise UploadedFileExists
 
@@ -34,7 +34,7 @@ def handle_uploaded_file(f):
         for f in rf.infolist():
             if not f.isdir():
                 ext = f.filename.split('.')[-1].lower()
-                if ext in KC_DONJIN_IMAGE_EXT:
+                if ext in KC_DOUJIN_IMAGE_EXT:
                     cnt += 1
         if cnt >= 2:
             return path
@@ -47,15 +47,15 @@ def handle_uploaded_file(f):
 
 
 def extract_rar_file(file):
-    extract_dir = os.path.join(KC_DONJIN_IMAGE_DIR, file.get_extract_dir())
-    path = os.path.join(KC_DONJIN_UPLOAD_DIR, file.file_name)
+    extract_dir = os.path.join(KC_DOUJIN_IMAGE_DIR, file.get_extract_dir())
+    path = os.path.join(KC_DOUJIN_UPLOAD_DIR, file.file_name)
     rf = rarfile.RarFile(path)
 
     img_list = []
     for f in rf.infolist():
         if not f.isdir():
             ext = f.filename.split('.')[-1].lower()
-            if ext in KC_DONJIN_IMAGE_EXT:
+            if ext in KC_DOUJIN_IMAGE_EXT:
                 img_list.append(f.filename)
     img_list = natsort.natsorted(img_list)
     pages = len(img_list)

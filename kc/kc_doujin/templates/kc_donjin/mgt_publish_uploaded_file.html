@@ -12,7 +12,7 @@
         {% if form %}
           {% crispy form form.helper %}
         {% else %}
-          <div class="alert alert-danger">{{ message|safe }}</div>
+          {{ message|safe }}
         {% endif %}
       </div>
     </div>

@@ -5,12 +5,12 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
-from kc_donjin.lib import handle_uploaded_file, extract_rar_file
-from kc_donjin.lib import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
-from kc_donjin.models import KcUploadedComicFile, KcComic
-from kc_donjin.forms import KcComicPublishForm
+from kc_doujin.lib import handle_uploaded_file, extract_rar_file
+from kc_doujin.lib import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
+from kc_doujin.models import KcUploadedComicFile, KcComic
+from kc_doujin.forms import KcComicPublishForm
 
-context = {'active': 'donjin'}
+context = {'active': 'doujin'}
 
 
 @login_required
@@ -108,7 +108,7 @@ def publish_uploaded_file(request, fid):
             context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
             return render(request, 'warning.html', context)
         if f.linked:
-            context['message'] = '<p>您操作的文件已发布。</p><p><a href="%s" class="alert-link">返回列表</a></p>' % reverse('kc-donjin-publish')
+            context['message'] = '<div class="alert alert-danger"><p>您操作的文件已发布。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
         else:
             form = KcComicPublishForm(request.POST or None, initial={'title': f.file_name[:-4]})
             if form.is_valid():
@@ -122,14 +122,14 @@ def publish_uploaded_file(request, fid):
                 f.linked = True
                 f.save()
                 context['form'] = None
-                context['message'] = '<p>发布成功！。</p><p><a href="%s" class="alert-link">返回列表</a></p>' % reverse('kc-donjin-publish')
+                context['message'] = '<div class="alert alert-success"><p>发布成功！。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
                 return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
             else:
                 context['form'] = form
                 return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
     else:
         context['form'] = None
-        context['message'] = '<p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p>' % reverse('kc-donjin-publish')
+        context['message'] = '<div class="alert alert-danger"><p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
         return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
 
 @login_required

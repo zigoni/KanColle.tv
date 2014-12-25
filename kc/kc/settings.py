@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'kc_base',
     'kc_user',
-    'kc_donjin',
+    'kc_doujin',
     'kc_home',
     'kc_connector',
     'crispy_forms',
