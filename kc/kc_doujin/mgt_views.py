@@ -126,6 +126,7 @@ def publish_uploaded_file(request, fid):
                 context['message'] = '<div class="alert alert-success"><p>发布成功！</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')
             else:
                 context['form'] = form
+                context['f'] = f
     else:
         context['form'] = None
         context['message'] = '<div class="alert alert-danger"><p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')

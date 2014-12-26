@@ -10,6 +10,7 @@
       <div class="panel-heading">发布文件</div>
       <div class="panel-body">
         {% if form %}
+          <p class="text-muted">对应文件：{{ f.file_name }}</p>
           {% crispy form form.helper %}
         {% else %}
           {{ message|safe }}
