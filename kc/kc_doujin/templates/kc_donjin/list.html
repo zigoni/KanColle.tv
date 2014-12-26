@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}同人志{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-10">
+    {% for c in comics %}
+    <div class="doujin-list-item">
+      <img src="{{ c.get_img_prefix }}cover_thumbnail.jpg">
+      <p>{{ c.title }}</p>
+    </div>
+    <div class="doujin-list-item">
+      <img src="{{ c.get_img_prefix }}cover_thumbnail.jpg">
+      <p>{{ c.title }}</p>
+    </div>
+    <div class="doujin-list-item">
+      <img src="{{ c.get_img_prefix }}cover_thumbnail.jpg">
+      <p>{{ c.title }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

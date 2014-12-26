@@ -35,7 +35,7 @@
       <ul class="nav nav-pills pull-right">
         <li role="presentation"{% ifequal active 'home' %} class="active"{% endifequal %}><a href="{% url 'kc-home' %}">主页</a></li>
         <li role="presentation"{% ifequal active 'connector' %} class="active"{% endifequal %}><a href="{% url 'kc-connector' %}">登录器</a></li>
-        <li role="presentation"{% ifequal active 'doujin' %} class="active"{% endifequal %}><a href="https://kancolle.tv/comic/">同人志</a></li>
+        <li role="presentation"{% ifequal active 'doujin' %} class="active"{% endifequal %}><a href="{% url 'kc-doujin' %}">同人志</a></li>
         <li role="presentation"{% ifequal active 'user' %} class="active"{% endifequal %}><a class="dropdown-toggle" data-toggle="dropdown">KTV用户 <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-menu-right small-width" role="menu">
             {% if user.is_authenticated %}<li><a href="{% url 'kc-user-home' %}">设置</a></li>

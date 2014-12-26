@@ -36,6 +36,9 @@ class KcComic(models.Model):
     pages = models.PositiveIntegerField('页码数', default=0)
     clicks = models.PositiveIntegerField('阅读次数', default=0)
 
+    def get_img_prefix(self):
+        return '%sdoujin/%s/' % (settings.MEDIA_URL, self.file.get_extract_dir())
+
     class Meta:
         verbose_name = '同人漫画'
         verbose_name_plural = '同人漫画'
