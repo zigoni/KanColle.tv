@@ -59,7 +59,6 @@ def extract_rar_file(file):
                 ext = f.split('.')[-1].lower()
                 if ext in KC_DOUJIN_IMAGE_EXT:
                     img_list.append(os.path.join(root, f))
-                    print(os.path.join(root, f))
 
     img_list = natsort.natsorted(img_list)
     pages = len(img_list)
