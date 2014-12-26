@@ -1,16 +1,16 @@
+import os
 import json
 import hashlib
-import os
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from kc_doujin.lib import handle_uploaded_file, extract_rar_file
-from kc_doujin.lib import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
+from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
 from kc_doujin.models import KcUploadedComicFile, KcComic
 from kc_doujin.forms import KcComicPublishForm
-from kc_doujin.config import *
+from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
 
 context = {'active': 'doujin'}
 
@@ -46,11 +46,11 @@ def upload_receiver(request):
         try:
             path = handle_uploaded_file(request.FILES['rar_file'])
         except UploadedFileExists:
-            response['message'] = '<p>您上传的文件和已有文件冲突。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+            response['message'] = '<p>您上传的文件和已有文件冲突。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-doujin-upload')
         except UploadedFileFormatError:
-            response['message'] = '<p>您上传的文件不是RAR文件。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+            response['message'] = '<p>您上传的文件不是RAR文件。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-doujin-upload')
         except UploadedFileContentError:
-            response['message'] = '<p>您上传的文件不符合系统要求。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+            response['message'] = '<p>您上传的文件不符合系统要求。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-doujin-upload')
 
         if path:
             md5 = hashlib.md5(open(path, 'rb').read()).hexdigest()
@@ -63,12 +63,12 @@ def upload_receiver(request):
                 f.save()
                 response = {
                     'class': 'alert-success',
-                    'message': '<p>文件上传成功！</p><p><a href="%s" class="alert-link">继续上传</a></p>' % reverse('kc-donjin-upload'),
+                    'message': '<p>文件上传成功！</p><p><a href="%s" class="alert-link">继续上传</a></p>' % reverse('kc-doujin-upload'),
                     'rar_file': path,
                 }
             else:
                 os.unlink(path)
-                response['message'] = '<p>您上传的文件已经存在。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-donjin-upload')
+                response['message'] = '<p>您上传的文件已经存在。</p><p><a href="%s" class="alert-link">重新上传</a></p>' % reverse('kc-doujin-upload')
     else:
         response['message'] = '<p>你上传了什么鬼？</p>'
 
@@ -110,7 +110,7 @@ def publish_uploaded_file(request, fid):
             context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
             return render(request, 'warning.html', context)
         if f.linked:
-            context['message'] = '<div class="alert alert-danger"><p>您操作的文件已发布。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
+            context['message'] = '<div class="alert alert-danger"><p>您操作的文件已发布。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')
         else:
             form = KcComicPublishForm(request.POST or None, initial={'title': f.file_name[:-4]})
             if form.is_valid():
@@ -124,14 +124,14 @@ def publish_uploaded_file(request, fid):
                 f.linked = True
                 f.save()
                 context['form'] = None
-                context['message'] = '<div class="alert alert-success"><p>发布成功！。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
+                context['message'] = '<div class="alert alert-success"><p>发布成功！。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')
                 return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
             else:
                 context['form'] = form
                 return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
     else:
         context['form'] = None
-        context['message'] = '<div class="alert alert-danger"><p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-donjin-publish')
+        context['message'] = '<div class="alert alert-danger"><p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')
         return render(request, 'kc_donjin/mgt_publish_uploaded_file.html', context)
 
 @login_required

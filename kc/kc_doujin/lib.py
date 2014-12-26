@@ -2,19 +2,8 @@ import os
 import rarfile
 import natsort
 from PIL import Image
-from kc_doujin.config import *
-
-
-class UploadedFileExists(Exception):
-    pass
-
-
-class UploadedFileFormatError(Exception):
-    pass
-
-
-class UploadedFileContentError(Exception):
-    pass
+from kc_doujin.config import KC_DOUJIN_UPLOAD_DIR, KC_DOUJIN_IMAGE_EXT, KC_DOUJIN_IMAGE_DIR
+from kc_doujin.exceptions import *
 
 
 def handle_uploaded_file(f):

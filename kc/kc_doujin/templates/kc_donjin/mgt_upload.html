@@ -17,7 +17,7 @@
       <script type="text/javascript">
         $(document).ready(function(){
           $("#uploader").uploadFile({
-            url: "{% url 'kc-donjin-upload-receiver' %}",
+            url: "{% url 'kc-doujin-upload-receiver' %}",
             fileName: "rar_file",
             formData: {'csrfmiddlewaretoken': $.cookie('csrftoken')},
             returnType: "json",
