@@ -4,6 +4,7 @@ from kc_doujin.views import KcComicList
 
 urlpatterns = patterns('',
     url(r'^$', KcComicList.as_view(), name='kc-doujin'),
+    url(r'^page/(?P<page>\d+)/$$', KcComicList.as_view(), name='kc-doujin-list'),
     url(r'^upload/$', 'kc_doujin.mgt_views.upload', name='kc-doujin-upload'),
     url(r'^upload/receiver/', 'kc_doujin.mgt_views.upload_receiver', name='kc-doujin-upload-receiver'),
     url(r'^publish/$', 'kc_doujin.mgt_views.publish', name='kc-doujin-publish'),

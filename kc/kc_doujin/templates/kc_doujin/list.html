@@ -12,5 +12,16 @@
     </div>
     {% endfor %}
   </div>
+  <div class="col-md-2">
+  </div>
+  {% if is_paginated %}
+  <div class="col-md-12">
+    <p>共{{ page_obj.paginator.num_pages }}页 当前第{{ page_obj.number }}页
+    <a href="{% url 'kc-doujin-list' page=1 %}">首页</a>
+    {% if page_obj.has_previous %}<a href="{% url 'kc-doujin-list' page=page_obj.previous_page_number %}">前一页</a>{% endif %}
+    {% if page_obj.has_next %}<a href="{% url 'kc-doujin-list' page=page_obj.next_page_number %}">后一页</a>{% endif %}
+    <a href="{% url 'kc-doujin-list' page=page_obj.paginator.num_pages %}">尾页</a>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
