@@ -1,4 +1,6 @@
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 from kc_doujin.models import KcComic
 from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
 
@@ -12,7 +14,7 @@ class KcComicList(ListView):
         queryset = KcComic.objects.filter(is_active=True)
 
         if self.request.user.is_authenticated():
-            qfilter = self.request.session.get('comic_filter', 'normal')
+            qfilter = self.request.session.get('doujin_filter', 'normal')
         else:
             qfilter = 'normal'
 
@@ -25,7 +27,7 @@ class KcComicList(ListView):
         else:
             queryset = queryset.filter(is_r18=False)
 
-        order = self.request.session.get('comic_order', 'time')
+        order = self.request.session.get('doujin_order', 'time')
         if order == 'time':
             return queryset.order_by('-publish_time')
         elif order == 'otime':
@@ -39,3 +41,14 @@ class KcComicList(ListView):
         c = super(KcComicList, self).get_context_data(**kwargs)
         c['active'] = 'doujin'
         return c
+
+
+def orderby(request, order):
+    request.session['doujin_order'] = order
+    return redirect('kc-doujin')
+
+
+@login_required
+def filterby(request, qfilter):
+    request.session['doujin_filter'] = qfilter
+    return redirect('kc-doujin')

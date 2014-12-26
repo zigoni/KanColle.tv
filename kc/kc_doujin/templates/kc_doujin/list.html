@@ -13,6 +13,26 @@
     {% endfor %}
   </div>
   <div class="col-md-2">
+    <div id="doujin-filter">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">排序模式 <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="{% url 'kc-doujin-order' 'time' %}">按上传时间</a></li>
+          <li><a href="{% url 'kc-doujin-order' 'otime' %}">上传时间倒序</a></li>
+          <li><a href="{% url 'kc-doujin-order' 'clicks' %}">按热门程度</a></li>
+        </ul>
+      </div>
+      {% if user.is_authenticated %}
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">内容过滤 <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="{% url 'kc-doujin-filter' 'normal' %}">仅全年龄</a></li>
+          <li><a href="{% url 'kc-doujin-filter' 'r18' %}">仅R-18</a></li>
+          <li><a href="{% url 'kc-doujin-filter' 'all' %}">全部</a></li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
   </div>
   {% if is_paginated %}
   <div class="col-md-12">
