@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from kc_doujin.models import KcComic
@@ -42,6 +42,39 @@ class KcComicList(ListView):
         c['active'] = 'doujin'
         return c
 
+
+class KcComicDetail(DetailView):
+    context_object_name = 'c'
+    template_name = 'kc_doujin/detail.html'
+
+    def get_queryset(self):
+        queryset = KcComic.objects.filter(is_active=True)
+        if not self.request.user.is_authenticated():
+            queryset = queryset.filter(is_r18=False)
+        return queryset
+
+    def get_object(self):
+        obj = super(KcComicDetail, self).get_object()
+        flag = self.request.session.get('cm'+str(obj.id), None)
+        if flag is None:
+            obj.clicks += 1
+            obj.save(update_fields=['clicks'])
+            self.request.session['cm'+str(obj.id)] = True
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(KcComicDetail, self).get_context_data(**kwargs)
+        context['active'] = 'doujin'
+        page = int(self.kwargs.get('page', '1'))
+        context['current'] = page
+        if page > 1:
+            context['previous'] = page - 1
+        if page < self.object.pages:
+            context['next'] = page + 1
+        #fullscreen = self.kwargs.get('fullscreen', False)
+        #if fullscreen:
+        #    self.template_name = 'kc_doujin/detail_fullscreen.html'
+        return context
 
 def orderby(request, order):
     request.session['doujin_order'] = order

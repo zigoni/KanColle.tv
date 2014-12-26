@@ -6,10 +6,10 @@
 <div class="row">
   <div class="col-md-10">
     {% for c in comics %}
-    <div class="doujin-list-item">
+    <div class="doujin-list-item"><a href="{% url 'kc-doujin-detail' pk=c.pk %}">
       <img src="{{ c.get_img_prefix }}cover_thumbnail.jpg">
       <p>{{ c.title }}</p>
-    </div>
+    </a></div>
     {% endfor %}
   </div>
   <div class="col-md-2">

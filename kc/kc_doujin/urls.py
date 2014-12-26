@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from kc_doujin.views import KcComicList
+from kc_doujin.views import KcComicList, KcComicDetail
 
 
 urlpatterns = patterns('',
@@ -7,6 +7,9 @@ urlpatterns = patterns('',
     url(r'^page/(?P<page>\d+)/$$', KcComicList.as_view(), name='kc-doujin-list'),
     url(r'^filterby/(normal|r18|all)/$', 'kc_doujin.views.filterby', name='kc-doujin-filter'),
     url(r'^orderby/(time|otime|clicks)/$', 'kc_doujin.views.orderby', name='kc-doujin-order'),
+    url(r'^cm(?P<pk>\d+)/$', KcComicDetail.as_view(), name='kc-doujin-detail'),
+    #url(r'^cm(?P<pk>\d+)/fullscreen/$', KcComicDetail.as_view(), {'fullscreen': True}, name='kc-doujin-detail-fullscreen'),
+    url(r'^cm(?P<pk>\d+)/p(?P<page>\d+)/$', KcComicDetail.as_view(), name='kc-doujin-detail-page'),
     url(r'^upload/$', 'kc_doujin.mgt_views.upload', name='kc-doujin-upload'),
     url(r'^upload/receiver/', 'kc_doujin.mgt_views.upload_receiver', name='kc-doujin-upload-receiver'),
     url(r'^publish/$', 'kc_doujin.mgt_views.publish', name='kc-doujin-publish'),
