@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}搜索结果{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-10">
+  {% if queryset %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>同人志</th>
+          <th>发布日期</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for q in queryset %}
+        <tr>
+          <td><a href="{% url 'kc-doujin-detail' pk=q.pk %}" target="_blank">{{ q.title }}</a></td>
+          <td>{{ q.publish_time|date:"Y-n-j G:i" }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>没有搜索到任何结果……</p>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

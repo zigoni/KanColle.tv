@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from kc_doujin.models import KcComic
 from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
 
@@ -76,6 +76,7 @@ class KcComicDetail(DetailView):
         #    self.template_name = 'kc_doujin/detail_fullscreen.html'
         return context
 
+
 def orderby(request, order):
     request.session['doujin_order'] = order
     return redirect('kc-doujin')
@@ -85,3 +86,22 @@ def orderby(request, order):
 def filterby(request, qfilter):
     request.session['doujin_filter'] = qfilter
     return redirect('kc-doujin')
+
+
+@login_required
+def search(request):
+    q = request.GET.get('q', '')
+    if len(q) < 2:
+        context = {
+            'active': 'doujin',
+            'title': '搜索失败',
+            'message': '请至少输入两个字符进行搜索',
+        }
+        return render(request, 'warning.html', context)
+    else:
+        queryset = KcComic.objects.filter(title__contains=q)
+        context = {
+            'active': 'doujin',
+            'queryset': queryset,
+        }
+        return render(request, 'kc_doujin/search.html', context)
