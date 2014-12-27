@@ -103,5 +103,6 @@ def search(request):
         context = {
             'active': 'doujin',
             'queryset': queryset,
+            'q': q,
         }
         return render(request, 'kc_doujin/search.html', context)

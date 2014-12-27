@@ -5,8 +5,10 @@
 {% block content %}
 <div class="row">
   <div class="col-md-10">
+  <p>搜索关键词：<strong>{{ q }}</strong></p>
   {% if queryset %}
     <table class="table table-striped">
+      <caption>搜索结果</caption>
       <thead>
         <tr>
           <th>同人志</th>
