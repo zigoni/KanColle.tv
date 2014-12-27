@@ -42,6 +42,7 @@ class KcComic(models.Model):
     class Meta:
         verbose_name = '同人漫画'
         verbose_name_plural = '同人漫画'
+        ordering = ['-publish_time']
 
     def __str__(self):
         return self.title
