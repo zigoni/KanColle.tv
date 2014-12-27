@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load KcUserTags %}
 
 {% block content %}
 <div class="row">
@@ -11,6 +12,7 @@
         <li class="list-group-item"><a href="{% url 'kc-user-logout' %}">注销</a></li>
       </ul>
     </div>
+    {% kc_user_quicklink %}
   </div>
   {% block job %}{% endblock %}
 </div>

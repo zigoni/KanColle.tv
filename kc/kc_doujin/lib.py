@@ -83,3 +83,10 @@ def extract_rar_file(file):
 
     shutil.rmtree(tmp_dir)
     return pages
+
+
+def check_privilege(user):
+    if user.is_superuser or user.is_staff() or user.is_doujin_publisher():
+        return 1
+    elif user.is_doujin_uploader():
+        return 2

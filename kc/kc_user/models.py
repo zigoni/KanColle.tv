@@ -72,14 +72,14 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
         kc_groups = set([g.symbol for g in self.kc_groups.all()])
         return kc_groups
 
-    def is_donjin_uploader(self):
+    def is_doujin_uploader(self):
         kc_groups = self.get_kc_groups()
         if KC_DOUJIN_UPLOADER in kc_groups:
             return True
         else:
             return False
 
-    def is_donjin_publisher(self):
+    def is_doujin_publisher(self):
         kc_groups = self.get_kc_groups()
         if KC_DOUJIN_PUBLISHER in kc_groups:
             return True
