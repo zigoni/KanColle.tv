@@ -3,10 +3,6 @@ from django.contrib import admin
 from django.conf import settings
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'kc.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'kc_home.views.home', name='kc-home'),
     url(r'^connector/$', 'kc_connector.views.home', name='kc-connector'),
@@ -19,4 +15,8 @@ urlpatterns = patterns('',
 if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     )
+
+handler404 = 'kc_base.views.view404'
+handler500 = 'kc_base.views.view500'
