@@ -11,6 +11,7 @@
       <div class="panel-body">
         {% if form %}
           <p class="text-muted">对应文件：{{ f.file_name }}</p>
+          <p>请把压缩包文件名中的汉化组填到下面单独的字段中，“(C85)”之类的移到标题末尾。</p>
           {% crispy form form.helper %}
         {% else %}
           {{ message|safe }}
