@@ -1,5 +1,12 @@
 # KanColle.tv
 
-这是一个基于Django开发的小网站，目前正在重构中……
+这是一个基于Django开发的小网站，为广大《舰队collection》玩家服务，具体内容请访问[网站主页](http://kancolle.tv)。
 
-目前 [网站主页](http://kancolle.tv) 使用的还是旧版代码，并没有托管在这里。这边弄得差不多了之后大概就会改过来吧……
+本程序基于Python 3.4和Django 1.7开发，另外还依赖以下的包：
+
+* django-crispy-forms
+* django-smtp-ssl
+* natsort
+* patool
+* Pillow
+* requests
