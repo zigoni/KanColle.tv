@@ -2,9 +2,9 @@ import hashlib
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from kc_user.config import *
-from kc_user.models import *
-from kc_user.forms import *
+from kc_user.config import KC_USER_SIGNUP
+from kc_user.models import KcUser, KcUserEmailConfirmation, KcUserPasswordReset
+from kc_user.forms import SignupForm, ChangePasswordForm, ForgetPasswordForm, ResetPasswordForm
 
 
 context = {'active': 'user'}
@@ -53,15 +53,15 @@ def signup(request):
 
 def confirmation(request, code):
     try:
-        confirmation = KcUserEmailConfirmation.objects.get(code=code)
+        c = KcUserEmailConfirmation.objects.get(code=code)
     except KcUserEmailConfirmation.DoesNotExist:
         context['title'] = '激活码无效'
         context['message'] = '激活码无效，激活失败！'
         return render(request, 'warning.html', context)
-    user = confirmation.user
+    user = c.user
     user.is_active = True
     user.save(update_fields=['is_active'])
-    confirmation.delete()
+    c.delete()
     context['title'] = '激活成功'
     context['message'] = '您的账号已激活成功，请从页面右上角的登录按钮登录。'
     return render(request, 'message.html', context)

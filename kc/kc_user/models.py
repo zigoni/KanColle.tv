@@ -1,12 +1,12 @@
 #coding: utf-8
 
 import re
+from importlib import import_module
 from django.core import validators
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.conf import settings
-from kc_doujin.config import *
 
 
 class KcUserManager(BaseUserManager):
@@ -72,19 +72,19 @@ class KcUser(AbstractBaseUser, PermissionsMixin):
         kc_groups = set([g.symbol for g in self.kc_groups.all()])
         return kc_groups
 
-    def is_doujin_uploader(self):
-        kc_groups = self.get_kc_groups()
-        if KC_DOUJIN_UPLOADER in kc_groups:
-            return True
-        else:
+    def privilege(self, app_name):
+        if self.is_staff or self.is_superuser:
+            return 1
+        try:
+            app_config = import_module('kc_%s.config' % app_name)
+            privilege_groups = app_config.KC_PRIVILEGE_GROUPS
+        except (ImportError, AttributeError):
             return False
-
-    def is_doujin_publisher(self):
-        kc_groups = self.get_kc_groups()
-        if KC_DOUJIN_PUBLISHER in kc_groups:
-            return True
-        else:
-            return False
+        groups = self.get_kc_groups()
+        for i in range(len(privilege_groups)):
+            if groups & privilege_groups[i]:
+                return i+2
+        return False
 
     class Meta:
         verbose_name = '用户'

@@ -1,5 +1,6 @@
 {% extends 'kc_user/user_base.html' %}
 {% load staticfiles %}
+{% load KcUserTags %}
 
 {% block title %}KTV用户中心{% endblock %}
 
@@ -22,8 +23,6 @@
         </div>
       </div>
     </div>
-    {% if user.is_superuser or user.is_staff or user.is_donjin_publisher or user.is_donjin_uploader %}
-      {% include 'kc_doujin/mgt.html' %}
-    {% endif %}
+    {% kc_management_loader %}
   </div>
 {% endblock %}

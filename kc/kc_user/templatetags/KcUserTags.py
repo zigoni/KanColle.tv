@@ -1,25 +1,35 @@
-from importlib import import_module
 from django import template
 from django.template.loader import get_template
+from kc_user.config import KC_MANAGED_APPS
 
 
 register = template.Library()
 
 
+class KcUserManagementLoader(template.Node):
+    def render(self, context):
+        u = context['user']
+        output = ''
+        for app_name in KC_MANAGED_APPS:
+            if u.privilege(app_name):
+                t = get_template('kc_%s/mgt.html' % app_name)
+                output += t.render(context)
+        return output
+
+
+@register.tag()
+def kc_management_loader(parser, token):
+    return KcUserManagementLoader()
+
+
 class KcUserQuickLink(template.Node):
     def render(self, context):
-        active = context.get('active', None)
-        if active is None or active == 'user':
+        app_name = context.get('active', None)
+        if app_name is None or app_name == 'user':
             return ''
-
-        try:
-            app = import_module('kc_%s.lib' % active)
-        except ImportError:
-            print(context['active'])
-            return ''
-
-        if app.check_privilege(context['user']):
-            t = get_template('kc_%s/quicklink.html' % active)
+        u = context['user']
+        if u.privilege(app_name):
+            t = get_template('kc_%s/quicklink.html' % app_name)
             return t.render(context)
         return ''
 

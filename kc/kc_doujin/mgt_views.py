@@ -16,7 +16,7 @@ context = {'active': 'doujin'}
 @login_required
 def upload(request):
     u = request.user
-    if not (u.is_superuser or u.is_staff or u.is_doujin_publisher or u.is_doujin_uploader):
+    if u.privilege('doujin') is False:
         context['title'] = '权限不足'
         context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
         return render(request, 'warning.html', context)
@@ -35,7 +35,7 @@ def upload_receiver(request):
     }
 
     u = request.user
-    if not (u.is_superuser or u.is_staff or u.is_doujin_publisher or u.is_doujin_uploader):
+    if u.privilege('doujin') is False:
         response['message'] = '<p>您没有上传文件的权限。</p>'
     elif request.method != 'POST':
         response['message'] = '<p>请手下留情，不要攻击本站。</p>'
@@ -76,15 +76,15 @@ def upload_receiver(request):
 @login_required
 def publish(request):
     u = request.user
-    if not (u.is_superuser or u.is_staff or u.is_doujin_publisher or u.is_doujin_uploader):
+    if u.privilege('doujin') is False:
         context['title'] = '权限不足'
         context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
         return render(request, 'warning.html', context)
 
-    if u.is_superuser or u.is_staff or u.is_doujin_publisher:
-        query = KcUploadedComicFile.objects.filter(linked=False)
-    else:
+    if u.privilege('doujin') == 3:
         query = KcUploadedComicFile.objects.filter(uploader=u, linked=False)
+    else:
+        query = KcUploadedComicFile.objects.filter(linked=False)
     context['files'] = query
     return render(request, 'kc_doujin/mgt_publish_list.html', context)
 
@@ -92,7 +92,7 @@ def publish(request):
 @login_required
 def publish_uploaded_file(request, fid):
     u = request.user
-    if not (u.is_superuser or u.is_staff or u.is_doujin_publisher or u.is_doujin_uploader):
+    if u.privilege('doujin') is False:
         context['title'] = '权限不足'
         context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
         return render(request, 'warning.html', context)
@@ -103,7 +103,7 @@ def publish_uploaded_file(request, fid):
         f = None
 
     if f:
-        if not (u.is_superuser or u.is_staff or u.is_doujin_publisher) and u.is_doujin_uploader and f.uploader != u:
+        if u.privilege('doujin') == 3 and f.uploader != u:
             context['title'] = '权限不足'
             context['message'] = '只有属于同人志上传组或发布组的用户才能进行本操作'
             return render(request, 'warning.html', context)
@@ -131,6 +131,7 @@ def publish_uploaded_file(request, fid):
         context['form'] = None
         context['message'] = '<div class="alert alert-danger"><p>您操作的文件不存在。</p><p><a href="%s" class="alert-link">返回列表</a></p></div>' % reverse('kc-doujin-publish')
     return render(request, 'kc_doujin/mgt_publish_uploaded_file.html', context)
+
 
 @login_required
 def delete_uploaded_file(request, fid):
