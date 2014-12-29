@@ -6,6 +6,7 @@
 
 * django-crispy-forms
 * django-smtp-ssl
+* django-sendfile
 * natsort
 * patool
 * Pillow
