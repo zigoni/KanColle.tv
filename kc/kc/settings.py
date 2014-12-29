@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'kc_home',
     'kc_connector',
     'crispy_forms',
+    'sendfile',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,3 +108,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('KC_EMAIL_HOST_PASSWORD')
 # Login
 LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/user/'
+
+# sendfile
+SENDFILE_BACKEND = os.environ.get('KC_SENDFILE_BACKEND', 'sendfile.backends.simple')
+SENDFILE_ROOT = os.path.join(BASE_DIR, '_rar')
+SENDFILE_URL = '/rar'

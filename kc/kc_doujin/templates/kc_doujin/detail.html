@@ -6,7 +6,13 @@
 <div class="row">
   <div class="col-md-12 text-center doujin-detail">
     <h4><strong>{{ c.title }}</strong></h4>
-    <p>共{{ c.pages }}页 | 汉化组：{% ifequal c.translator "" %}无{% else %}{{ c.translator }}{% endifequal %} | 发布者：{{ c.publisher.username }} | 发布时间：{{ c.publish_time|date:"Y-n-j G:i" }} | 阅读次数：{{ c.clicks }}
+    <p>共{{ c.pages }}页 |
+      汉化组：{% ifequal c.translator "" %}无{% else %}{{ c.translator }}{% endifequal %} |
+      发布者：{{ c.publisher.username }} |
+      发布时间：{{ c.publish_time|date:"Y-n-j G:i" }} |
+      阅读次数：{{ c.clicks }} |
+      <a href="{% url 'kc-doujin-download' pk=c.pk %}">下载</a>
+    </p>
     <p><img src="{{ c.get_img_prefix }}{{ current }}.jpg" class="img-responsive"></p>
     <p>
       <a href="{% url 'kc-doujin-detail' pk=c.pk %}" class="btn btn-primary">首页</a>

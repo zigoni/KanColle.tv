@@ -1,8 +1,10 @@
+import os
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from sendfile import sendfile
 from kc_doujin.models import KcComic
-from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
+from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE, KC_DOUJIN_UPLOAD_DIR
 
 
 class KcComicList(ListView):
@@ -106,3 +108,11 @@ def search(request):
             'q': q,
         }
         return render(request, 'kc_doujin/search.html', context)
+
+
+@login_required
+def download(request, pk):
+    c = get_object_or_404(KcComic, pk=pk)
+    f = c.file.file_name
+    path = os.path.join(KC_DOUJIN_UPLOAD_DIR, f)
+    return sendfile(request, path, attachment=True, attachment_filename=f)
