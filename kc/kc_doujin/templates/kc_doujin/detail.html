@@ -22,6 +22,26 @@
       <a href="{% url 'kc-doujin-detail-page' pk=c.pk page=c.pages %}" class="btn btn-primary">尾页</a>
     </p>
   </div>
+  {% if not c.is_r18 %}
+  <div class="col-md-12">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="cm{{ c.pk }}" data-title="{{ c.title }}" data-url="http://kancolle.tv{% url 'kc-doujin-detail' pk=c.pk %}"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kancolletv"};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+  </div>
+  {% endif %}
   <script type="text/javascript">
   {% if previous %}prev_url = "{% url 'kc-doujin-detail-page' pk=c.pk page=previous %}";{% else %}prev_url = false;{% endif %}
   {% if next %}next_url = "{% url 'kc-doujin-detail-page' pk=c.pk page=next %}";{% else %}next_url = false;{% endif %}
