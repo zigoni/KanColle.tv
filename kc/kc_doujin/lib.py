@@ -73,7 +73,7 @@ def extract_rar_file(file):
             new_w = int(float(w) / float(h) * 1080 + 0.5)
             img.thumbnail((new_w, 1080), Image.ANTIALIAS)
         save_path = os.path.join(extract_dir, '%d.jpg' % (p+1))
-        img.save(save_path)
+        img.convert('RGB').save(save_path)
 
     cover = Image.open(img_list[0])
     w, h = cover.size
