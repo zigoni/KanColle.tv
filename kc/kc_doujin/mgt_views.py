@@ -5,10 +5,13 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, InvalidPage
 from kc_doujin.lib import handle_uploaded_file, extract_rar_file
-from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
+from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError, DoujinMgtException, DoujinMgtComic
 from kc_doujin.forms import KcComicPublishForm
 from kc_doujin.models import KcUploadedComicFile, KcComic
+from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
+
 
 context = {'active': 'doujin'}
 
@@ -134,16 +137,39 @@ def publish_uploaded_file(request, fid):
 
 
 @login_required
-def delete_uploaded_file(request, fid):
-    pass
+def list_comic(request):
+    try:
+        u = request.user
+        if u.privilege('doujin') is False:
+            raise DoujinMgtComic('您没有进行本操作所需的权限')
 
+        if 'q' in request.GET:
+            q = request.GET['q']
+            if len(q) < 2:
+                raise DoujinMgtComic('请至少输入两个字符用于搜索')
+            queryset = KcComic.objects.filter(title__contains=q)
+            context['q'] = q
+        else:
+            queryset = KcComic.objects.all()
+            context['q'] = ''
+        if u.privilege('doujin') == 3:
+            queryset = queryset.filter(publisher=u)
 
-@login_required
-def edit_comic(request, cid):
-    pass
+        try:
+            page = request.GET.get('page', 1)
+        except ValueError:
+            raise DoujinMgtComic('URL参数错误')
+        page_obj = Paginator(queryset, KC_DOUJIN_ITEM_PER_PAGE)
+        try:
+            p = page_obj.page(page)
+        except InvalidPage:
+            raise DoujinMgtComic('分页错误')
 
+        context['p'] = p
+        context['num_pages'] = page_obj.num_pages
+        context['page'] = page
+        return render(request, 'kc_doujin/mgt_list.html', context)
 
-@login_required
-def delete_comic(request, cid):
-    pass
-
+    except DoujinMgtException as e:
+        context['e'] = e
+        return render(request, e.template, context)

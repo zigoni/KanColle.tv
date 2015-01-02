@@ -31,7 +31,7 @@ class KcComic(models.Model):
     publisher = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='发布者')
     publish_time = models.DateTimeField('发布时间', auto_now_add=True)
     translator = models.CharField('汉化组', blank=True, max_length=24, default='')
-    description = models.CharField('简介(不超过255字)', max_length=255, default='')
+    description = models.CharField('简介(不超过255字)', blank=True, max_length=255, default='')
     file = models.OneToOneField(KcUploadedComicFile, related_name='comic')
     pages = models.PositiveIntegerField('页码数', default=0)
     clicks = models.PositiveIntegerField('阅读次数', default=0)

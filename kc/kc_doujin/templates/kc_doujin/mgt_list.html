@@ -1,0 +1,58 @@
+{% extends 'kc_user/user_base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}管理漫画{% endblock %}
+
+{% block job %}
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">管理漫画</div>
+      <div class="panel-body">
+        <p>本站管理员和同人发布组可以管理所有漫画。同人上传组可以管理自己发布的漫画。</p>
+        <div id="doujin-search">
+          <form class="form" role="search" id="search_form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="搜索" name="q" id="q">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          </form>
+        </div>
+        {% if q %}<p>搜索关键词：<strong>{{ q }}</strong></p>{% endif %}
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>漫画</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for c in p.object_list %}
+            <tr>
+              <td title="发布者：{{ c.publisher.username  }}&#13;发布时间：{{ c.publish_time|date:"Y-n-j G:i"  }}">
+                {{ c.title }}{% if not c.is_active %} <span class="text-danger">(已关闭)</span>{% endif %}
+              </td>
+              <td>
+                <a href="" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
+                {% if c.is_active %}<a href="" title="关闭" onclick="return confirm('你确定要关闭这个漫画吗？\n{{ c.title }}');"><i class="glyphicon glyphicon-eye-close"></i></a>
+                {% else %}<a href="" title="开启"><i class="glyphicon glyphicon-eye-open"></i></a>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% if p.has_other_pages %}
+        <p>共{{ num_pages }}页 当前第{{ page }}页
+          <a href="{% url 'kc-doujin-list-comic' %}{% if q %}?q={{ q|urlencode }}{% endif %}">首页</a>
+          {% if p.has_previous %}<a href="{% url 'kc-doujin-list-comic' %}?{% if q %}q={{ q|urlencode }}&amp;{% endif %}page={{ p.previous_page_number }}">前一页</a>{% endif %}
+          {% if p.has_next %}<a href="{% url 'kc-doujin-list-comic' %}?{% if q %}q={{ q|urlencode }}&amp;{% endif %}page={{ p.next_page_number }}">后一页</a>{% endif %}
+          <a href="{% url 'kc-doujin-list-comic' %}?{% if q %}q={{ q|urlencode }}&amp;{% endif %}page={{ num_pages }}">尾页</a>
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"><img src="{% static 'img/doujin_manage.png' %}" class="action-logo"></div>
+{% endblock %}
