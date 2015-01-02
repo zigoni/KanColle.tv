@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     #url(r'^edit/cm(?P<cid>\d+)/$', 'kc_doujin.mgt_views.edit_comic', name='kc-doujin-edit-comic'),
     #url(r'^delete/cm(?P<cid>\d+)/$', 'kc_doujin.mgt_views.delete_comic', name='kc-doujin-delete-comic'),
     url(r'^list/$', 'kc_doujin.mgt_views.list_comic', name='kc-doujin-list-comic'),
+    url(r'^toggle/cm(?P<cid>\d+)/$', 'kc_doujin.mgt_views.toggle_comic', name='kc-doujin-toggle-comic'),
 )

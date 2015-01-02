@@ -1,13 +1,13 @@
 {% extends 'kc_user/user_base.html' %}
 {% load staticfiles %}
 
-{% block title %}发生错误{% endblock %}
+{% block title %}操作成功{% endblock %}
 
 {% block job %}
   <div class="col-md-8">
     <div class="panel panel-default">
-      <div class="panel-heading">发生错误</div>
-      <div class="panel-body text-danger">
+      <div class="panel-heading">操作成功</div>
+      <div class="panel-body text-success">
         <p>{{ e.message }}</p>
         <p>{% for v in e.views %}<a href="{% url v.url %}">{{ v.name }}</a> {% endfor %}</p>
         <p><a href="{% url 'kc-user-home' %}">返回用户中心首页</a> </p>

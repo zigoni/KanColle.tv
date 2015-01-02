@@ -173,3 +173,35 @@ def list_comic(request):
     except DoujinMgtException as e:
         context['e'] = e
         return render(request, e.template, context)
+
+
+@login_required
+def toggle_comic(request, cid):
+    try:
+        u = request.user
+        privilege = u.privilege('doujin')
+        if privilege is False:
+            raise DoujinMgtComic('您没有进行本操作所需的权限！')
+        try:
+            c = KcComic.objects.get(pk=cid)
+        except KcComic.DoesNotExist:
+            raise DoujinMgtComic('您操作的对象不存在！')
+        if privilege == 3 and c.publisher != u:
+            raise DoujinMgtComic('您没有进行本操作所需的权限！')
+
+        if c.is_active is True:
+            c.is_active = False
+        else:
+            c.is_active = True
+        c.save()
+        context['e'] = {
+            'message': '漫画（cm%s）已成功%s！' % (cid, '开启' if c.is_active else '关闭'),
+            'views': (
+                {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
+            ),
+            'picture': 'img/doujin_manage.png',
+        }
+        return render(request, 'kc_doujin/mgt_success.html', context)
+    except DoujinMgtException as e:
+        context['e'] = e
+        return render(request, e.template, context)
