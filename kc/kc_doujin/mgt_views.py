@@ -7,10 +7,11 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage
 from kc_doujin.lib import handle_uploaded_file, extract_rar_file
-from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError, DoujinMgtException, DoujinMgtComic
+from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
+from kc_doujin.exceptions import DoujinMgtException, DoujinMgtUploadError, DoujinMgtComicError
 from kc_doujin.forms import KcComicPublishForm
 from kc_doujin.models import KcUploadedComicFile, KcComic
-from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE
+from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE, KC_DOUJIN_UPLOAD_DIR
 
 
 context = {'active': 'doujin'}
@@ -141,12 +142,12 @@ def list_comic(request):
     try:
         u = request.user
         if u.privilege('doujin') is False:
-            raise DoujinMgtComic('您没有进行本操作所需的权限')
+            raise DoujinMgtComicError('您没有进行本操作所需的权限')
 
         if 'q' in request.GET:
             q = request.GET['q']
             if len(q) < 2:
-                raise DoujinMgtComic('请至少输入两个字符用于搜索')
+                raise DoujinMgtComicError('请至少输入两个字符用于搜索')
             queryset = KcComic.objects.filter(title__contains=q)
             context['q'] = q
         else:
@@ -158,12 +159,12 @@ def list_comic(request):
         try:
             page = request.GET.get('page', 1)
         except ValueError:
-            raise DoujinMgtComic('URL参数错误')
+            raise DoujinMgtComicError('URL参数错误')
         page_obj = Paginator(queryset, KC_DOUJIN_ITEM_PER_PAGE)
         try:
             p = page_obj.page(page)
         except InvalidPage:
-            raise DoujinMgtComic('分页错误')
+            raise DoujinMgtComicError('分页错误')
 
         context['p'] = p
         context['num_pages'] = page_obj.num_pages
@@ -181,13 +182,13 @@ def toggle_comic(request, cid):
         u = request.user
         privilege = u.privilege('doujin')
         if privilege is False:
-            raise DoujinMgtComic('您没有进行本操作所需的权限！')
+            raise DoujinMgtComicError('您没有进行本操作所需的权限！')
         try:
             c = KcComic.objects.get(pk=cid)
         except KcComic.DoesNotExist:
-            raise DoujinMgtComic('您操作的对象不存在！')
+            raise DoujinMgtComicError('您操作的对象不存在！')
         if privilege == 3 and c.publisher != u:
-            raise DoujinMgtComic('您没有进行本操作所需的权限！')
+            raise DoujinMgtComicError('您没有进行本操作所需的权限！')
 
         if c.is_active is True:
             c.is_active = False
@@ -200,6 +201,36 @@ def toggle_comic(request, cid):
                 {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
             ),
             'picture': 'img/doujin_manage.png',
+        }
+        return render(request, 'kc_doujin/mgt_success.html', context)
+    except DoujinMgtException as e:
+        context['e'] = e
+        return render(request, e.template, context)
+
+
+@login_required
+def delete_uploaded_file(request, fid):
+    try:
+        u = request.user
+        privilege = u.privilege('doujin')
+        if privilege is False:
+            raise DoujinMgtUploadError('您没有进行本操作所需的权限！')
+        try:
+            f = KcUploadedComicFile.objects.get(pk=fid)
+        except KcUploadedComicFile.DoesNotExist:
+            raise DoujinMgtUploadError('您操作的对象不存在！')
+        if privilege == 3 and f.uploader != u:
+            raise DoujinMgtComicError('您没有进行本操作所需的权限！')
+
+        file_name = f.file_name
+        os.unlink(os.path.join(KC_DOUJIN_UPLOAD_DIR, file_name))
+        f.delete()
+        context['e'] = {
+            'message': '文件（cm%s）已成功删除！' % file_name,
+            'views': (
+                {'url': 'kc-doujin-publish', 'name': '返回漫画发布'},
+            ),
+            'picture': 'img/doujin_upload.png',
         }
         return render(request, 'kc_doujin/mgt_success.html', context)
     except DoujinMgtException as e:

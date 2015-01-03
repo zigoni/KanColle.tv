@@ -19,7 +19,14 @@ class DoujinMgtException(GeneralViewException):
     picture = ''
 
 
-class DoujinMgtComic(DoujinMgtException):
+class DoujinMgtUploadError(DoujinMgtException):
+    views = (
+        {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
+    )
+    picture = 'img/doujin_upload.png'
+
+
+class DoujinMgtComicError(DoujinMgtException):
     views = (
         {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
     )
