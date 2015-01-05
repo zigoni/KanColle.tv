@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, InvalidPage
 from kc_doujin.lib import handle_uploaded_file, extract_rar_file
 from kc_doujin.exceptions import UploadedFileExists, UploadedFileFormatError, UploadedFileContentError
 from kc_doujin.exceptions import DoujinMgtException, DoujinMgtUploadError, DoujinMgtComicError
-from kc_doujin.forms import KcComicPublishForm
+from kc_doujin.forms import KcComicPublishForm, KcUploadedComicFileEditForm
 from kc_doujin.models import KcUploadedComicFile, KcComic
 from kc_doujin.config import KC_DOUJIN_ITEM_PER_PAGE, KC_DOUJIN_UPLOAD_DIR
 
@@ -196,7 +196,7 @@ def toggle_comic(request, cid):
             c.is_active = True
         c.save()
         context['e'] = {
-            'message': '漫画（cm%s）已成功%s！' % (cid, '开启' if c.is_active else '关闭'),
+            'message': '漫画（%s）已成功%s！' % (c.title, '开启' if c.is_active else '关闭'),
             'views': (
                 {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
             ),
@@ -226,13 +226,105 @@ def delete_uploaded_file(request, fid):
         os.unlink(os.path.join(KC_DOUJIN_UPLOAD_DIR, file_name))
         f.delete()
         context['e'] = {
-            'message': '文件（cm%s）已成功删除！' % file_name,
+            'message': '文件（%s）已成功删除！' % file_name,
             'views': (
                 {'url': 'kc-doujin-publish', 'name': '返回漫画发布'},
             ),
             'picture': 'img/doujin_upload.png',
         }
         return render(request, 'kc_doujin/mgt_success.html', context)
+    except DoujinMgtException as e:
+        context['e'] = e
+        return render(request, e.template, context)
+
+
+@login_required
+def edit_comic(request, cid):
+    try:
+        u = request.user
+        privilege = u.privilege('doujin')
+        if privilege is False:
+            raise DoujinMgtUploadError('您没有进行本操作所需的权限！')
+        try:
+            c = KcComic.objects.get(pk=cid)
+        except KcComic.DoesNotExist:
+            raise DoujinMgtComicError('您操作的对象不存在！')
+        if privilege == 3 and c.publisher != u:
+            raise DoujinMgtComicError('您没有进行本操作所需的权限！')
+
+        context['f'] = c.file
+        if request.method == 'POST':
+            form = KcComicPublishForm(request.POST or None)
+            if form.is_valid():
+                c.title = form.cleaned_data['title']
+                c.is_r18 = form.cleaned_data['is_r18']
+                c.translator = form.cleaned_data['translator']
+                c.description = form.cleaned_data['description']
+                c.save()
+                context['e'] = {
+                    'message': '漫画（%s）编辑成功！' % c.title,
+                    'views': (
+                        {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
+                    ),
+                    'picture': 'img/doujin_manage.png',
+                }
+                return render(request, 'kc_doujin/mgt_success.html', context)
+            else:
+                context['form'] = form
+        else:
+            context['form'] = KcComicPublishForm({
+                'title': c.title,
+                'is_r18': c.is_r18,
+                'translator': c.translator,
+                'description': c.description,
+            })
+        return render(request, 'kc_doujin/mgt_edit.html', context)
+
+    except DoujinMgtException as e:
+        context['e'] = e
+        return render(request, e.template, context)
+
+
+@login_required
+def edit_uploaded_file(request, fid):
+    try:
+        u = request.user
+        privilege = u.privilege('doujin')
+        if privilege is False:
+            raise DoujinMgtUploadError('您没有进行本操作所需的权限！')
+        try:
+            f = KcUploadedComicFile.objects.get(pk=fid)
+        except KcUploadedComicFile.DoesNotExist:
+            raise DoujinMgtUploadError('您操作的对象不存在！')
+        if privilege == 3 and f.uploader != u:
+            raise DoujinMgtComicError('您没有进行本操作所需的权限！')
+
+        if request.method == 'POST':
+            form = KcUploadedComicFileEditForm(request.POST or None)
+            if form.is_valid():
+                context['form'] = None
+                file_name = form.cleaned_data['file_name']
+                old_path = os.path.join(KC_DOUJIN_UPLOAD_DIR, f.file_name)
+                new_path = os.path.join(KC_DOUJIN_UPLOAD_DIR, file_name)
+                os.rename(old_path, new_path)
+                f.file_name = file_name
+                f.save()
+                context['e'] = {
+                    'message': '文件（%s）已成功修改！' % file_name,
+                    'views': (
+                        {'url': 'kc-doujin-list-comic', 'name': '返回漫画管理'},
+                    ),
+                    'picture': 'img/doujin_upload.png',
+                }
+                return render(request, 'kc_doujin/mgt_success.html', context)
+            else:
+                context['form'] = form
+        else:
+            context['form'] = KcUploadedComicFileEditForm(None, initial={
+                'file_name': f.file_name,
+            })
+        return render(request, 'kc_doujin/mgt_edit_uploaded_file.html', context)
+
     except DoujinMgtException as e:
         context['e'] = e
         return render(request, e.template, context)

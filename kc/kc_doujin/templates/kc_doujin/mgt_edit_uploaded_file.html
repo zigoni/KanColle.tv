@@ -1,0 +1,19 @@
+{% extends 'kc_user/user_base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}编辑压缩包信息{% endblock %}
+
+{% block job %}
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">编辑压缩包信息</div>
+      <div class="panel-body">
+        {% if form %}
+          {% crispy form form.helper %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"><img src="{% static 'img/doujin_upload.png' %}" class="action-logo"></div>
+{% endblock %}

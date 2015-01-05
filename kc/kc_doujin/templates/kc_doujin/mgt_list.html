@@ -35,7 +35,7 @@
                 {{ c.title }}{% if not c.is_active %} <span class="text-danger">(已关闭)</span>{% endif %}
               </td>
               <td>
-                <a href="" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
+                <a href="{% url 'kc-doujin-edit-comic' cid=c.pk %}" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
                 <a href="{% url 'kc-doujin-toggle-comic' cid=c.pk %}" {% if c.is_active %}title="关闭" onclick="return confirm('你确定要关闭这个漫画吗？\n{{ c.title }}');"{% else %}title="开启"{% endif %}>
                   <i class="glyphicon glyphicon-eye-{% if c.is_active %}close{% else %}open{% endif %}"></i>
                 </a>
