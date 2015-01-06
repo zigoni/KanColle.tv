@@ -113,3 +113,23 @@ LOGIN_REDIRECT_URL = '/user/'
 SENDFILE_BACKEND = os.environ.get('KC_SENDFILE_BACKEND', 'sendfile.backends.simple')
 SENDFILE_ROOT = os.path.join(BASE_DIR, '_rar')
 SENDFILE_URL = '/rar'
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
