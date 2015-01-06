@@ -1,14 +1,10 @@
 #coding: utf-8
 
 import os
-import logging
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from kc_doujin.config import KC_DOUJIN_UPLOAD_DIR
-
-
-logger = logging.getLogger('django.request')
 
 
 class KcComicPublishForm(forms.Form):
@@ -38,7 +34,6 @@ class KcUploadedComicFileEditForm(forms.Form):
         path = os.path.join(KC_DOUJIN_UPLOAD_DIR, file_name)
         base_dir = os.path.abspath(KC_DOUJIN_UPLOAD_DIR)
         upload_dir = os.path.dirname(os.path.abspath(path))
-        logger.debug('%s, %s, %s' % (path, base_dir, upload_dir))
         if base_dir != upload_dir:
             raise forms.ValidationError(self.error_messages['invalid_path'])
         if os.path.exists(path):
