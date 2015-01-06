@@ -36,9 +36,10 @@ class KcUploadedComicFileEditForm(forms.Form):
     def clean_file_name(self):
         file_name = self.cleaned_data['file_name']
         path = os.path.join(KC_DOUJIN_UPLOAD_DIR, file_name)
-        base_dir = os.path.dirname(os.path.abspath(path))
-        logger.debug('%s, %s, %s' % (path, base_dir, KC_DOUJIN_UPLOAD_DIR))
-        if base_dir != KC_DOUJIN_UPLOAD_DIR:
+        base_dir = os.path.dirname(KC_DOUJIN_UPLOAD_DIR)
+        upload_dir = os.path.dirname(os.path.abspath(path))
+        logger.debug('%s, %s, %s' % (path, base_dir, upload_dir))
+        if base_dir != upload_dir:
             raise forms.ValidationError(self.error_messages['invalid_path'])
         if os.path.exists(path):
             raise forms.ValidationError(self.error_messages['file_name_exists'])
