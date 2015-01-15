@@ -90,7 +90,6 @@ def filterby(request, qfilter):
     return redirect('kc-doujin')
 
 
-@login_required
 def search(request):
     q = request.GET.get('q', '')
     if len(q) < 2:
