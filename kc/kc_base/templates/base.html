@@ -34,7 +34,7 @@
     <nav>
       <ul class="nav nav-pills pull-right">
         <li role="presentation"{% ifequal active 'home' %} class="active"{% endifequal %}><a href="{% url 'kc-home' %}">主页</a></li>
-        <li role="presentation"><a href="http://bbs.kancolle.tv/">论坛</a></li>
+        <li role="presentation"><a href="http://bbs.kancolle.tv/"><span style="color: red;"><strong>舰娘论坛</strong></span></strong></a></li>
         <li role="presentation"{% ifequal active 'connector' %} class="active"{% endifequal %}><a href="{% url 'kc-connector' %}">登录器</a></li>
         <li role="presentation"{% ifequal active 'doujin' %} class="active"{% endifequal %}><a href="{% url 'kc-doujin' %}">同人志</a></li>
         {% ifequal active 'user' %}<li role="presentation" class="active"><a class="dropdown-toggle" data-toggle="dropdown">KTV用户 <span class="caret"></span></a>
