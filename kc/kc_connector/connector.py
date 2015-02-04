@@ -26,7 +26,6 @@ def get_play_url(login_id, password):
         raise TokenError
     else:
         token = m.group(1)
-    print(dmm_token, token)
 
     # AJAX request
     # Get id_token, idKey and pwKey
