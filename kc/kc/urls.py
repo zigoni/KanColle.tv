@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^hosts/$', 'kc_home.views.hosts', name='kc-hosts'),
     url(r'^user/', include('kc_user.urls')),
     url(r'^doujin/', include('kc_doujin.urls')),
+    url(r'^donate/', include('kc_donate.urls')),
 )
 
 if settings.DEBUG:

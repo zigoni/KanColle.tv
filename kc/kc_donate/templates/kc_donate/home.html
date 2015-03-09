@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}捐助{% endblock %}
+
+{% block content %}
+<div class="text-indent text-justify row">
+  <div class="col-md-8">
+    <h3 class="text-primary">捐助我们</h3>
+    <p>“舰队collection资讯”（kancolle.tv）是完全公益性质的网站，登录器、同人志、论坛和其他所有的功能均免费向所有提督提供。网站运营所需的服务器、运维、美工等均需要资金支持，如果觉得这个我们网站帮助了广大提督，您可以向我们捐款，以便我们能够更好的改进服务，给提督们更多的便利。</p>
+    <form id="donate_form" method="POST" action="https://shenghuo.alipay.com/send/payment/fill.htm" target="_blank">
+      <p>您可以<input type="submit" value="点击这里" class="btn btn-sm btn-primary">向我们捐款，也可以通过手机支付宝钱包扫描二维码进行捐款。捐款时请备注“舰队资讯·捐款” 。</p>
+      <input type="hidden" name="optEmail" value="finance@kancolle.tv">
+      <input type="hidden" name="payAmount" value="">
+      <input type="hidden" name="title" value="">
+    </form>
+    <p>我们的淘宝账号是finance@kancolle.tv，捐款时请注意核对。</p>
+  </div>
+  <div class="col-md-4">
+    <img src="{% static 'img/donate.png' %}" alt="二维码">
+  </div>
+</div>
+{% endblock %}
