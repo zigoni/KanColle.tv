@@ -20,4 +20,27 @@
     <img src="{% static 'img/donate.png' %}" alt="二维码">
   </div>
 </div>
+<div class="text-indent text-justify">
+  <h3 class="text-primary">感谢以下捐赠者：</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>捐赠时间</th>
+        <th>捐赠者</th>
+        <th>捐赠金额</th>
+        <th>留言</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in q %}
+      <tr>
+        <td>{{ r.donate_time|date:"Y-n-j G:i" }}</td>
+        <td>{{ r.donator }}</td>
+        <td>{{ r.amount|floatformat:"2" }}</td>
+        <td>{{ r.note }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
