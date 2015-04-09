@@ -1,0 +1,30 @@
+var NeedProxyHost = {"203.104.209.7":1,"203.104.105.167":1,"203.104.209.71":1,"125.6.184.15":1,"125.6.184.16":1,"125.6.187.205":1,"125.6.187.229":1,"125.6.187.253":1,"125.6.188.25":1,"203.104.248.135":1,"125.6.189.7":1,"125.6.189.39":1,"125.6.189.71":1,"125.6.189.103":1,"125.6.189.135":1,"125.6.189.167":1,"125.6.189.215":1,"125.6.189.247":1,"203.104.209.23":1,"203.104.209.39":1,"203.104.209.55":1};
+var NeedPacHostPostfix = {"dmm.com":1,"dmm.co.jp":1};
+
+var autoproxy = "PROXY proxy.kancolle.tv:9012";
+
+function TrimStr(str, c) {
+    while(str.length > 0 && str.substr(0, 1) == c) {
+        str = str.substr(1);
+    }
+    while(str.length > 0 && str.substr(str.length - 1) == c) {
+        str = str.substr(0, str.length - 1);
+    }
+    return str;
+}
+function FindProxyForURL(url, host) {
+    host = TrimStr(host, '.');
+    if (NeedProxyHost[host] == 1) {
+        return autoproxy;
+    }
+    var HostSplit = host.split('.');
+    if (HostSplit.length > 0) {
+        var host_postfix = HostSplit[HostSplit.length - 1];
+        for (var i = HostSplit.length - 2; i > -1; i--) {
+            host_postfix = HostSplit[i] + '.' + host_postfix;
+            if (NeedPacHostPostfix[host_postfix] == 1)
+                return autoproxy;
+        }
+    }
+    return "DIRECT";
+}
