@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'kc_doujin',
     'kc_donate',
     'kc_home',
-    'kc_connector',
     'crispy_forms',
     'sendfile',
 )
